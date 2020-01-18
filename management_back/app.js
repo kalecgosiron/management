@@ -3,13 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var ejs=require('ejs');
-
+var ejs = require('ejs');
+var expressJwt = require('express-jwt')
+// 模块路径导入
 var user = require('./routes/user');
 var captext = require('./routes/captext');
-
+// express
 var app = express();
 
+// 跨域
 app.use((req, res, next) => {
   // 设置是否运行客户端设置 withCredentials
   // 即在不同域名下发出的请求也可以携带 cookie
@@ -36,6 +38,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//中间件
+//jwt
+app.use(expressJwt ({
+  secret: 'xIandsan'  // 签名的密钥 或 PublicKey
+}).unless({
+  path: ['/user/checkUser', '/captext/getCaptcha', '/captext/createCapthca']  // 指定路径不经过 Token 解析
+}))
+
+// 导入路径
 app.use('/user', user);
 app.use('/captext', captext);
 
