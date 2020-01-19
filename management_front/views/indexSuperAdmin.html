@@ -62,7 +62,7 @@
             </li>
             <li class="layui-nav-item" lay-unselect>
               <a href="javascript:;">
-                <cite>账号设置</cite>
+                <cite id="username">账号设置</cite>
               </a>
               <dl class="layui-nav-child">
                 <dd><a lay-href="set/user/info.html">基本资料</a></dd>
@@ -257,9 +257,28 @@
           base: '../layuiadmin/' //静态资源所在路径
         })
         .extend({
-          index: 'lib/index' //主入口模块
+          index: '../layuiadmin/lib/index' //主入口模块
         })
-        .use('index')
+        .use(['index'], function() {
+          var $ = layui.jquery,
+            layer = layui.layer
+          layer.ready(function() {
+            $.ajax({
+              async: false,
+              cache: false,
+              dataType: 'json',
+              type: 'GET',
+              url: 'http://localhost:3000/home/getUserInfo',
+              headers: {
+                Authorization: window.localStorage.getItem('token')
+              },
+              success: function(data) {
+                var username = data.username
+                $('#username').html(username)
+              }
+            })
+          })
+        })
     </script>
   </body>
 </html>

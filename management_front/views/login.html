@@ -269,8 +269,6 @@
             },
             url: 'http://localhost:3000/user/checkUser',
             success: function(data) {
-              // alert(data.userauthority)
-              console.log(data.userauthority)
               if (data.code == 200) {
                 window.localStorage.setItem('token', data.token)
                 layer.msg('登录成功', function() {
@@ -304,6 +302,21 @@
                 // });
               } else {
                 alert(data.msg)
+                // 请求验证码
+                $.ajax({
+                  type: 'GET', // 方法类型
+                  async: false,
+                  dataType: 'json', // 预期服务器返回的数据类型
+                  url: 'http://localhost:3000/captext/createCapthca',
+                  complete: function(data) {
+                    $('#randimg').attr(
+                      'src',
+                      'http://localhost:3000/captext/getCaptcha?uuid=' +
+                        data.responseJSON.uuid
+                    )
+                    $('#uuid').val(data.responseJSON.uuid)
+                  }
+                })
               }
             }
           })

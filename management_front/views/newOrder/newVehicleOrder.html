@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>表单组合</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                <div class="layui-card-header">通过填写信息新建车险保单</div>
+                    <div class="layui-card-body" style="padding: 15px;">
+                        <form class="layui-form" id="VehicleFormPost">
+                            <div class="layui-form-item">
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">保单号</label>
+                                    <div class="layui-input-block" >
+                                        <input type="text" name="ordernumber" autocomplete="off" placeholder="请输入保单号" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-col-lg6">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">出单日期</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="date" id="LAY-component-form-group-date" lay-verify="date" placeholder="年-月-日" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="layui-form-item">
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">保单印刷号</label>
+                                    <div class="layui-input-block" >
+                                        <input type="text" name="orderprintnumber" autocomplete="off" placeholder="请输入保单印刷号" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-col-lg6">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">归属部门</label>
+                                        <div class="layui-input-inline">
+                                            <select name="attributiondepartment" lay-verify="required" lay-search="">
+                                            <option value="">直接选择或搜索选择</option>
+                                            <option value="44018447">44018447</option>
+                                            <option value="44018420">44018420</option>
+                                            <option value="44018446">44018446</option>
+                                            <option value="44018403">44018403</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">经办人</label>
+                                    <div class="layui-input-block" style="width:40%">
+                                        <input type="text" name="charge" autocomplete="off" placeholder="请输入经办人" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">出单员</label>
+                                    <div class="layui-input-block" style="width:40%">
+                                        <input type="text" name="dispatchclerk" autocomplete="off" placeholder="请输入出单员" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">被保险人</label>
+                                    <div class="layui-input-block" style="width:40%">
+                                        <input type="text" name="insured" autocomplete="off" placeholder="请输入被保险人" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">车牌</label>
+                                    <div class="layui-input-block" style="width:40%">
+                                        <input type="text" name="licenseplate" autocomplete="off" placeholder="请输入被保险人" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">投保单签章</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="ordersignature" lay-skin="switch" lay-text="不欠缺|欠缺">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block" style="margin-left: 300px;">
+                                    <button type="button" id="btn" class="layui-btn lay-submit" lay-filter="component-form-element">立即提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                <div class="layui-card-header">通过EXCEL导入新建车险保单</div>
+                <div class="layui-card-body" style="padding: 15px;">
+                  <form class="layui-form" id="uploadfile">
+                    <div class="layui-form-item">
+                        <div class="layui-upload">
+                            <input type="file" name="excel" id="file" />
+                            <button type="button" id="uploadbtn">点击上传</button>
+                        </div> 
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="../../layuiadmin/layui/layui.js"></script>  
+    <script>
+      layui.config({
+          base: '../../layuiadmin/' //静态资源所在路径
+      }).extend({
+          index: 'lib/index' //主入口模块
+      }).use(['index', 'form', 'laydate','upload'], function(){
+        var $ = layui.$
+        ,admin = layui.admin
+        ,element = layui.element
+        ,layer = layui.layer
+        ,laydate = layui.laydate
+        ,form = layui.form
+        ,upload = layui.upload;
+        
+        //日期范围
+        laydate.render({
+            elem: '#test6'
+            ,range: true
+        });
+
+        //日期选择器
+        form.render(null, 'component-form-group');
+
+        laydate.render({
+        elem: '#LAY-component-form-group-date'
+        });
+
+        //提交按钮
+        $("#btn").click(function () {
+          $.ajax({  
+            headers: {
+              Authorization: window.localStorage.getItem('token')
+            },
+            data:$('#VehicleFormPost').serialize(),
+            type: "POST",   //提交的方法
+            url:"http://localhost:3000/newOrder/newVehicleOrder", //提交的地址  
+            async: false,  
+            success: function(data) {  //成功
+              alert(data.msg)
+            },
+            error: function(request) {  //失败的话
+              alert("连接错误");  
+            },  
+          });
+        }); 
+
+        $("#uploadbtn").click(function () {
+          $.ajax({  
+            headers: {
+              Authorization: window.localStorage.getItem('token')
+            },
+            data:$('#uploadfile').serialize(),
+            type: "POST",   //提交的方法
+            url:"http://localhost:3000/upload/uploadVehicle", //提交的地址  
+            async: false,  
+            success: function(data) {  //成功
+              console.log(data)
+            },
+            error: function(request) {  //失败的话
+              alert("连接错误");  
+            },  
+          });
+        }); 
+      });
+    </script>
+</body>
+</html>
