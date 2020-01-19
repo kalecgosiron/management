@@ -1,20 +1,12 @@
 var express = require('express')
 var router = express.Router()
-var moment = require('moment')
 var jwt = require('jsonwebtoken')
 
 var db = require('../db/db') // 引入db
 var userSql = require('../db/sql/userSql') // 引入sql语句
 
-// router.get('/getAllUsers', function(req, res, next) {
-//   console.log(req.user)
-//   res.send({ code: 200, msg: '查询成功', count: 1, data: 'data' })
-// })
-
 router.post('/checkUser', function(req, res, next) {
-  console.log(req.body)
   var password = req.body.password.toUpperCase()
-  console.log(password)
   var captext = req.body.captcha
   db.query(userSql.checkCaptextByUuid, [req.body.uuid], function(err, results) {
     if (captext == results[0].captext) {
@@ -43,6 +35,7 @@ router.post('/checkUser', function(req, res, next) {
                   'xIandsan',
                   { expiresIn: 3600 * 24 }
                 )
+              // console.log(token)
               res.send({
                 code: 200,
                 msg: '登录成功',
