@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
 </head>
 <body>
-    <div class="layui-fluid">
+    <div class="layui-fluid" id="formsubmit">
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md6">
                 <div class="layui-card">
@@ -151,6 +151,33 @@
         elem: '#LAY-component-form-group-date'
         });
 
+        //tablesubmit提交按钮
+        $("#btn_submit").click(function () {
+          console.log("来了")
+          var tabLen = document.getElementById("tableID");
+          var jsonT = "[";
+          for (var i = 1; i < tabLen.rows.length; i++) {
+            jsonT += '{"ordernumber":"' + tabLen.rows[i].cells[0].innerHTML + '","applicant":"' + tabLen.rows[i].cells[1].innerHTML + '","ordersignature":"' + tabLen.rows[i].cells[2].innerHTML + '","charge":"' + tabLen.rows[i].cells[3].innerHTML +  '","date":"' + tabLen.rows[i].cells[4].innerHTML + '","dispatchclerk":"' + tabLen.rows[i].cells[5].innerHTML + '","orderprintnumber":"' + tabLen.rows[i].cells[6].innerHTML + '","attributiondepartment":"' + tabLen.rows[i].cells[7].innerHTML + '"},'
+          }
+          jsonT= jsonT.substr(0, jsonT.length - 1);
+          jsonT += "]";
+          $.ajax({  
+            headers: {
+              Authorization: window.localStorage.getItem('token')
+            },
+            data:{jsonT},
+            type: "POST",   //提交的方法
+            url:"http://localhost:3000/upload/uploadVehicleJson", //提交的地址  
+            async: false,
+            success: function(data) {  //成功
+              console(data)
+            },
+            error: function(request) {  //失败的话
+              alert("连接错误");  
+            },  
+          });
+        });
+
         //提交按钮
         $("#btn").click(function () {
           $.ajax({  
@@ -171,19 +198,61 @@
         }); 
 
         $("#uploadbtn").click(function () {
+          var form = new FormData(document.getElementById("uploadfile"));
           $.ajax({  
             headers: {
               Authorization: window.localStorage.getItem('token')
             },
-            data:$('#uploadfile').serialize(),
+            data:form,
+            cache: false,
+            contentType: false,    //不可缺
+            processData: false,    //不可缺
             type: "POST",   //提交的方法
             url:"http://localhost:3000/upload/uploadVehicle", //提交的地址  
             async: false,  
             success: function(data) {  //成功
-              console.log(data)
+              var tableColumn = data.table_head.length
+              var tableRow = data.excel_data.length
+              if(data.code == 200){
+                $("#formsubmit").hide()
+                var tableData = "<div class='layui-fluid'><div class='layui-col-md12'><div class='layui-card'><table class='layui-table' id='tableID'><thead><tr>";
+                $.each(data,function(key,value){
+                  //遍历表头
+                  if(key == "table_head" || key == "excel_data"){
+                    if(key == "table_head"){
+                      for(tableHead = 0;tableHead < tableColumn; tableHead++){
+                        tableData += "<th>"
+                        tableData += value[tableHead]
+                        tableData += "</th>"
+                        if(tableHead == tableColumn - 1){
+                          tableData += "</thead><tbody>"
+                        }
+                      }
+                    }
+                    //遍历表格数据
+                    if(key == "excel_data"){
+                      tableData += "<tr>"
+                      for(i = 0;i < tableRow; i++){
+                        for(j = 0;j < tableColumn; j++){
+                          // console.log(value[i])
+                          tableData += "<td>"
+                          tableData += value[i][j]
+                          tableData += "</td>"
+                        }
+                        tableData += "</tr>"
+                      }
+                      //遍历完成之后
+                      tableData +="</tbody></table></div></div><button id='btn_submit' type='submit' class='layui-btn' style='display:block;margin:0 auto'>检查无误，确定上传</button></div>";
+                      $('body').append(tableData);
+                    }
+                  }
+                })
+              }else{
+                alert(data.msg)
+              }
             },
             error: function(request) {  //失败的话
-              alert("连接错误");  
+              alert("连接错误");
             },  
           });
         }); 

@@ -272,7 +272,6 @@
               if (data.code == 200) {
                 window.localStorage.setItem('token', data.token)
                 layer.msg('登录成功', function() {
-                  console.log(data.userauthority)
                   if (data.userauthority == 'superadmin') {
                     window.location = './indexSuperAdmin.html'
                   } else if (data.userauthority == 'departmentmanagement') {
@@ -283,23 +282,6 @@
                     window.location = './error.html'
                   }
                 })
-                // console.log(window.localStorage.getItem('token'))
-                // $.ajax({
-                //     type: "GET",// 方法类型
-                //     async: false,
-                //     dataType: "json",// 预期服务器返回的数据类型
-                //     url: "http://localhost:3000/user/getAllUsers",
-                //     headers: {
-                //        'Authorization': window.localStorage.getItem('token'),
-                //     },
-                //     success: function (data) {
-                //         if (data.code == 200) {
-                //             alert(data.msg)
-                //         }else{
-                //             alert(data.msg)
-                //         }
-                //     },
-                // });
               } else {
                 alert(data.msg)
                 // 请求验证码

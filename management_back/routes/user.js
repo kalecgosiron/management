@@ -50,7 +50,7 @@ router.post('/checkUser', function(req, res, next) {
         }
       })
     } else {
-      res.send({ code: 401, msg: '登录失败' })
+      res.send({ code: 401, msg: '验证码错误' })
     }
   })
 })
