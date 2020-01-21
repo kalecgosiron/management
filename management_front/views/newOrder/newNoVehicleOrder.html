@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>表单组合</title>
+  <title>新建非车险保单</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
 </head>
 <body>
-    <div class="layui-fluid">
+    <div class="layui-fluid" id="formsubmit">
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md6">
                 <div class="layui-card">
@@ -85,7 +85,7 @@
                                 <div class="layui-col-lg6">
                                     <label class="layui-form-label">投保单签章</label>
                                     <div class="layui-input-block">
-                                        <input type="checkbox" name="open" lay-skin="switch" lay-text="欠缺|不欠缺">
+                                      <input type="checkbox" name="ordersignature" lay-skin="switch" lay-text="不欠缺|欠缺">
                                     </div>
                                 </div>
                             </div>
@@ -104,43 +104,27 @@
                 <div class="layui-card">
                 <div class="layui-card-header">通过EXCEL导入新建非车险保单</div>
                 <div class="layui-card-body" style="padding: 15px;">
-                    <form class="layui-form" lay-filter="component-form-group" action="http://localhost:3000/uploadNoVehicle" method="POST" enctype="multipart/form-data">
-                        <div class="layui-form-item">
-                            <div class="layui-upload">
-                                <input type="file" name="excel" id="file" />
-                                <button id="submit">点击上传</button>
-                            </div> 
-                        </div>
-                    </form>
+                  <form class="layui-form" id="uploadfile">
+                    <div class="layui-form-item">
+                        <div class="layui-upload">
+                            <input type="file" name="excel" id="file" />
+                            <button type="button" id="uploadbtn">点击上传</button>
+                        </div> 
+                    </div>
+                  </form>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript">
-        $("#btn").click(function () {
-            $.ajax({  
-                data:$('#NoVehicleFormPost').serialize(),
-                type: "POST",   //提交的方法
-                url:"http://localhost:3000/newNoVehicleOrder", //提交的地址  
-                async: false,  
-                error: function(request) {  //失败的话
-                    alert("连接错误");  
-                },  
-                success: function(data) {  //成功
-                    alert(data);  //就将返回的数据显示出来
-                }  
-            });
-        }); 
-    </script>
-    <script src="../../layui/layui.js"></script>  
+    <script src="../../layuiadmin/layui/layui.js"></script>  
     <script>
-    layui.config({
-        base: '../../layui/' //静态资源所在路径
-    }).extend({
-        index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate','upload'], function(){
+      layui.config({
+          base: '../../layuiadmin/' //静态资源所在路径
+      }).extend({
+          index: 'lib/index' //主入口模块
+      }).use(['index', 'form', 'laydate','upload'], function(){
         var $ = layui.$
         ,admin = layui.admin
         ,element = layui.element
@@ -155,92 +139,119 @@
             ,range: true
         });
 
-        //指定允许上传的文件类型
-        upload.render({
-            elem: '#test-upload-type1'
-            ,url: '/upload/'
-            ,accept: 'file' //普通文件
-            ,done: function(res){
-                console.log(res)
-            }
-        });
-
-        //多文件列表示例
-        var demoListView = $('#demoList')
-        ,uploadListIns = upload.render({
-            elem: '#testList'
-            ,url: 'https://localhost:3000/upload/'
-            ,accept: 'file'
-            ,multiple: true
-            ,auto: false
-            ,bindAction: '#testListAction'
-            ,choose: function(obj){   
-            var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-            //读取本地文件
-            obj.preview(function(index, file, result){
-                var tr = $(['<tr id="upload-'+ index +'">'
-                ,'<td>'+ file.name +'</td>'
-                ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
-                ,'<td>等待上传</td>'
-                ,'<td>'
-                ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
-                ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
-                ,'</td>'
-                ,'</tr>'].join(''));
-                
-                //单个重传
-                tr.find('.demo-reload').on('click', function(){
-                obj.upload(index, file);
-                });
-                
-                //删除
-                tr.find('.demo-delete').on('click', function(){
-                delete files[index]; //删除对应的文件
-                tr.remove();
-                uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-                });
-                
-                demoListView.append(tr);
-            });
-            }
-            ,done: function(res, index, upload){
-            if(res.code == 0){ //上传成功
-                var tr = demoListView.find('tr#upload-'+ index)
-                ,tds = tr.children();
-                tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                tds.eq(3).html(''); //清空操作
-                return delete this.files[index]; //删除文件队列已经上传成功的文件
-            }
-            this.error(index, upload);
-            }
-            ,error: function(index, upload){
-            var tr = demoListView.find('tr#upload-'+ index)
-            ,tds = tr.children();
-            tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
-            tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
-            }
-        });
-
+        //日期选择器
         form.render(null, 'component-form-group');
 
         laydate.render({
         elem: '#LAY-component-form-group-date'
         });
-        
-        /* 自定义验证规则 */
-        form.verify({
-        title: function(value){
-            if(value.length < 5){
-            return '标题至少得5个字符啊';
-            }
-        }
-        ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-        ,content: function(value){
-            layedit.sync(editIndex);
-        }
+
+        //tablesubmit提交按钮
+        $("#btn_submit").click(function () {
+          console.log("来了")
+          var tabLen = document.getElementById("tableID");
+          var jsonT = "[";
+          for (var i = 1; i < tabLen.rows.length; i++) {
+            jsonT += '{"ordernumber":"' + tabLen.rows[i].cells[0].innerHTML + '","applicant":"' + tabLen.rows[i].cells[1].innerHTML + '","ordersignature":"' + tabLen.rows[i].cells[2].innerHTML + '","charge":"' + tabLen.rows[i].cells[3].innerHTML +  '","date":"' + tabLen.rows[i].cells[4].innerHTML + '","dispatchclerk":"' + tabLen.rows[i].cells[5].innerHTML + '","orderprintnumber":"' + tabLen.rows[i].cells[6].innerHTML + '","attributiondepartment":"' + tabLen.rows[i].cells[7].innerHTML + '"},'
+          }
+          jsonT= jsonT.substr(0, jsonT.length - 1);
+          jsonT += "]";
+          $.ajax({  
+            headers: {
+              Authorization: window.localStorage.getItem('token')
+            },
+            data:{jsonT},
+            type: "POST",   //提交的方法
+            url:"http://localhost:3000/upload/uploadVehicleJson", //提交的地址  
+            async: false,
+            success: function(data) {  //成功
+              console(data)
+            },
+            error: function(request) {  //失败的话
+              alert("连接错误");  
+            },  
+          });
         });
-        
-    });
+
+        //提交按钮
+        $("#btn").click(function () {
+          $.ajax({  
+            headers: {
+              Authorization: window.localStorage.getItem('token')
+            },
+            data:$('#NoVehicleFormPost').serialize(),
+            type: "POST",   //提交的方法
+            url:"http://localhost:3000/newOrder/newNoVehicleOrder", //提交的地址  
+            async: false,  
+            success: function(data) {  //成功
+              alert(data.msg)
+            },
+            error: function(request) {  //失败的话
+              alert("连接错误");  
+            },  
+          });
+        }); 
+
+        $("#uploadbtn").click(function () {
+          var form = new FormData(document.getElementById("uploadfile"));
+          $.ajax({  
+            headers: {
+              Authorization: window.localStorage.getItem('token')
+            },
+            data:form,
+            cache: false,
+            contentType: false,    //不可缺
+            processData: false,    //不可缺
+            type: "POST",   //提交的方法
+            url:"http://localhost:3000/upload/uploadNoVehicle", //提交的地址  
+            async: false,
+            success: function(data) {  //成功
+              var tableColumn = data.table_head.length
+              var tableRow = data.excel_data.length
+              if(data.code == 200){
+                $("#formsubmit").hide()
+                var tableData = "<div class='layui-fluid'><div class='layui-col-md12'><div class='layui-card'><table class='layui-table' id='tableID'><thead><tr>";
+                $.each(data,function(key,value){
+                  //遍历表头
+                  if(key == "table_head" || key == "excel_data"){
+                    if(key == "table_head"){
+                      for(tableHead = 0;tableHead < tableColumn; tableHead++){
+                        tableData += "<th>"
+                        tableData += value[tableHead]
+                        tableData += "</th>"
+                        if(tableHead == tableColumn - 1){
+                          tableData += "</thead><tbody>"
+                        }
+                      }
+                    }
+                    //遍历表格数据
+                    if(key == "excel_data"){
+                      tableData += "<tr>"
+                      for(i = 0;i < tableRow; i++){
+                        for(j = 0;j < tableColumn; j++){
+                          // console.log(value[i])
+                          tableData += "<td>"
+                          tableData += value[i][j]
+                          tableData += "</td>"
+                        }
+                        tableData += "</tr>"
+                      }
+                      //遍历完成之后
+                      tableData +="</tbody></table></div></div><button id='btn_submit' type='submit' class='layui-btn' style='display:block;margin:0 auto'>检查无误，确定上传</button></div>";
+                      $('body').append(tableData);
+                    }
+                  }
+                })
+              }else{
+                alert(data.msg)
+              }
+            },
+            error: function(request) {  //失败的话
+              alert("连接错误");
+            },  
+          });
+        }); 
+      });
     </script>
 </body>
 </html>

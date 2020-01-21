@@ -7,43 +7,50 @@ var formidable = require('formidable')
 var node_xlsx = require('node-xlsx')
 
 router.post('/uploadVehicle', function(req, res, next) {
-  var form = new formidable.IncomingForm()
-  form.encoding = 'utf-8' // 设置编码
-  form.uploadDir = './upload/' // 设置上传目录
-  form.keepExtensions = true // 保留后缀
-  form.maxFieldsSize = 5 * 1024 * 1024 // 文件大小上限设置为5M
-  form.parse(req, async function(err, fields, files) {
-    if (err) {
-      res.send({
-        code: 400,
-        msg: '上传文件错误'
-      })
-    } else {
-      const xlsxfile = files.excel.path
-      async function analysisdata() {
-        return new Promise((resolve, reject) => {
-          //解析xlsx
-          let obj = node_xlsx.parse(xlsxfile)
-          resolve(obj)
-        })
-      }
-      async function senddata(v) {
-        const excel_first_data = v[0]
-        const excel_data = excel_first_data.data
-        const table_head = excel_data[0]
-        // 删除文件第一行，即表头
-        excel_data.splice(0, 1)
+  if (
+    req.user.authority == 'superadmin' ||
+    req.user.authority == 'documentpost'
+  ) {
+    var form = new formidable.IncomingForm()
+    form.encoding = 'utf-8' // 设置编码
+    form.uploadDir = './upload/' // 设置上传目录
+    form.keepExtensions = true // 保留后缀
+    form.maxFieldsSize = 5 * 1024 * 1024 // 文件大小上限设置为5M
+    form.parse(req, async function(err, fields, files) {
+      if (err) {
         res.send({
-          code: 200,
-          table_head: table_head,
-          excel_data: excel_data,
-          file_name: xlsxfile
+          code: 400,
+          msg: '上传文件错误'
         })
+      } else {
+        const xlsxfile = files.excel.path
+        async function analysisdata() {
+          return new Promise((resolve, reject) => {
+            //解析xlsx
+            let obj = node_xlsx.parse(xlsxfile)
+            resolve(obj)
+          })
+        }
+        async function senddata(v) {
+          const excel_first_data = v[0]
+          const excel_data = excel_first_data.data
+          const table_head = excel_data[0]
+          // 删除文件第一行，即表头
+          excel_data.splice(0, 1)
+          res.send({
+            code: 200,
+            table_head: table_head,
+            excel_data: excel_data,
+            file_name: xlsxfile
+          })
+        }
+        let r = await analysisdata()
+        r = await senddata(r)
       }
-      let r = await analysisdata()
-      r = await senddata(r)
-    }
-  })
+    })
+  } else {
+    res.send({ code: 401, msg: '您没有权限进行此操作' })
+  }
 })
 
 router.post('/uploadVehicleJson', function(req, res, next) {
@@ -51,9 +58,12 @@ router.post('/uploadVehicleJson', function(req, res, next) {
   var len = Object.keys(table_data).length
   var sql_total = ''
   console.log(table_data)
+  var createtime = new Date()
+  createtime.toLocaleString() //获取日期与时间
+  var createuser = req.user.username
   // for (i = 0; i < len; i++) {
   //   var sql =
-  //     "INSERT INTO `车险` set ordernumber='" +
+  //     "INSERT INTO vehicleinsurance set ordernumber='" +
   //     table_data[i].ordernumber +
   //     "',insured='" +
   //     table_data[i].insured +
@@ -71,20 +81,71 @@ router.post('/uploadVehicleJson', function(req, res, next) {
   //     table_data[i].orderprintnumber +
   //     "',attributiondepartment='" +
   //     table_data[i].attributiondepartment +
+  //     "',createtime='" +
+  //     table_data[i].createtime +
+  //     "',createuser='" +
+  //     table_data[i].createuser +
   //     "';"
   //   sql_total += sql
   // }
   // try {
-  //   db.base(sql_total, (err, results) => {
+  //   db.query(sql_total, [], function(err, results) {
   //     if (err) {
-  //       res.send('导入数据库失败')
+  //       res.send({ code: 500, msg: '导入数据库失败' })
   //     } else {
-  //       res.send('导入数据库成功')
+  //       res.send({ code: 200, msg: '导入数据库成功' })
   //     }
   //   })
   // } catch (e) {
-  //   res.send('导入数据库失败')
+  //   res.send({ code: 500, msg: '导入数据库失败' })
   // }
+})
+
+router.post('/uploadNoVehicle', function(req, res, next) {
+  if (
+    req.user.authority == 'superadmin' ||
+    req.user.authority == 'documentpost'
+  ) {
+    var form = new formidable.IncomingForm()
+    form.encoding = 'utf-8' // 设置编码
+    form.uploadDir = './upload/' // 设置上传目录
+    form.keepExtensions = true // 保留后缀
+    form.maxFieldsSize = 5 * 1024 * 1024 // 文件大小上限设置为5M
+    form.parse(req, async function(err, fields, files) {
+      if (err) {
+        res.send({
+          code: 400,
+          msg: '上传文件错误'
+        })
+      } else {
+        const xlsxfile = files.excel.path
+        async function analysisdata() {
+          return new Promise((resolve, reject) => {
+            //解析xlsx
+            let obj = node_xlsx.parse(xlsxfile)
+            resolve(obj)
+          })
+        }
+        async function senddata(v) {
+          const excel_first_data = v[0]
+          const excel_data = excel_first_data.data
+          const table_head = excel_data[0]
+          // 删除文件第一行，即表头
+          excel_data.splice(0, 1)
+          res.send({
+            code: 200,
+            table_head: table_head,
+            excel_data: excel_data,
+            file_name: xlsxfile
+          })
+        }
+        let r = await analysisdata()
+        r = await senddata(r)
+      }
+    })
+  } else {
+    res.send({ code: 401, msg: '您没有权限进行此操作' })
+  }
 })
 
 module.exports = router

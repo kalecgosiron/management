@@ -35,7 +35,11 @@
     </div>
 
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <script src="../layuiadmin/layui/layui.js"></script>
+    <script src="../../layuiadmin/layui/layui.js"></script>
+    <script type="text/html" id="barDemo">
+      <a class="layui-btn layui-btn-xs" lay-event="pass">通过</a>
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="return">退回</a>
+    </script>
     <script>
       layui.use(['table'], function() {
         var table = layui.table
@@ -43,7 +47,10 @@
         table.render({
           elem: '#vehicle-table-page',
           loading: true,
-          url: 'https://localhost:3000/GetNoVehicleOrderorderVerify',
+          url: 'https://localhost:3000/orderVerify/NoVehicleOrderVerify',
+          headers: {
+            Authorization: window.localStorage.getItem('token')
+          },
           cols: [
             [
               { type: 'numbers' },
@@ -107,71 +114,62 @@
           ]
         })
       })
-    </script>
-    <script type="text/html" id="barDemo">
-      <a class="layui-btn layui-btn-xs" lay-event="pass">通过</a>
-      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="return">退回</a>
-    </script>
-    <script>
-      layui.use(['table'], function() {
-        var table = layui.table
-        table.on('tool(demo)', function(obj) {
-          var data = obj.data
-          var layEvent = obj.event
-          var tr = obj.tr
-          // 点击通过按钮后的操作
-          if (layEvent === 'pass') {
-            const ordernumber = data.ordernumber
-            layer.confirm('确定通过该保单吗', function(index) {
-              $.ajax({
-                url: 'https://localhost:3000/postPassNoVehicleOrder',
-                type: 'POST',
-                async: false,
-                data: { ordernumber: ordernumber },
-                success: function(data) {
-                  if (data.msg == 200) {
-                    // 删除这一行
-                    obj.del()
-                    // 关闭弹框
-                    layer.close(index)
-                    layer.msg('通过成功', { icon: 6 })
-                  } else {
-                    layer.msg('通过失败', { icon: 5 })
-                  }
-                },
-                fail: function() {
+      table.on('tool(demo)', function(obj) {
+        var data = obj.data
+        var layEvent = obj.event
+        var tr = obj.tr
+        // 点击通过按钮后的操作
+        if (layEvent === 'pass') {
+          const ordernumber = data.ordernumber
+          layer.confirm('确定通过该保单吗', function(index) {
+            $.ajax({
+              url: 'https://localhost:3000/postPassNoVehicleOrder',
+              type: 'POST',
+              async: false,
+              data: { ordernumber: ordernumber },
+              success: function(data) {
+                if (data.msg == 200) {
+                  // 删除这一行
+                  obj.del()
+                  // 关闭弹框
                   layer.close(index)
+                  layer.msg('通过成功', { icon: 6 })
+                } else {
                   layer.msg('通过失败', { icon: 5 })
                 }
-              })
+              },
+              fail: function() {
+                layer.close(index)
+                layer.msg('通过失败', { icon: 5 })
+              }
             })
-          } else if (layEvent === 'return') {
-            const ordernumber = data.ordernumber
-            layer.confirm('确定退回该保单吗', function(index) {
-              $.ajax({
-                url: 'https://localhost:3000/postReturnNoVehicleOrder',
-                type: 'POST',
-                async: false,
-                data: { ordernumber: ordernumber },
-                success: function(data) {
-                  if (data.msg == 200) {
-                    //删除这一行
-                    obj.del()
-                    //关闭弹框
-                    layer.close(index)
-                    layer.msg('退回成功', { icon: 6 })
-                  } else {
-                    layer.msg('退回失败', { icon: 5 })
-                  }
-                },
-                fail: function() {
+          })
+        } else if (layEvent === 'return') {
+          const ordernumber = data.ordernumber
+          layer.confirm('确定退回该保单吗', function(index) {
+            $.ajax({
+              url: 'https://localhost:3000/postReturnNoVehicleOrder',
+              type: 'POST',
+              async: false,
+              data: { ordernumber: ordernumber },
+              success: function(data) {
+                if (data.msg == 200) {
+                  //删除这一行
+                  obj.del()
+                  //关闭弹框
                   layer.close(index)
-                  layer.msg('通过失败', { icon: 5 })
+                  layer.msg('退回成功', { icon: 6 })
+                } else {
+                  layer.msg('退回失败', { icon: 5 })
                 }
-              })
+              },
+              fail: function() {
+                layer.close(index)
+                layer.msg('通过失败', { icon: 5 })
+              }
             })
-          }
-        })
+          })
+        }
       })
     </script>
   </body>

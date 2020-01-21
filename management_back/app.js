@@ -11,6 +11,7 @@ var captext = require('./routes/captext')
 var home = require('./routes/home')
 var newOrder = require('./routes/newOrder')
 var upload = require('./routes/upload')
+var check = require('./routes/check')
 // express
 var app = express()
 
@@ -61,6 +62,7 @@ app.use('/captext', captext)
 app.use('/home', home)
 app.use('/newOrder', newOrder)
 app.use('/upload', upload)
+app.use('/check', check)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

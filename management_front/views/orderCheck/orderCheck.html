@@ -21,17 +21,12 @@
     />
   </head>
   <body>
-    <div class="layui-fluid">
+    <div class="layui-fluid" id="form">
       <div class="layui-col-md6">
         <div class="layui-card">
           <div class="layui-card-header">保单查询</div>
           <div class="layui-card-body" style="padding: 15px;">
-            <form
-              class="layui-form"
-              action="https://localhost:3000/checkOrder"
-              method="POST"
-              lay-filter="component-form-group"
-            >
+            <form class="layui-form" id="checkform">
               <div class="layui-form-item">
                 <div class="layui-col-lg6">
                   <label class="layui-form-label">保单号</label>
@@ -186,11 +181,7 @@
               </div>
               <div class="layui-form-item">
                 <div class="layui-input-block" style="margin-left: 300px;">
-                  <button
-                    class="layui-btn"
-                    type="submit"
-                    lay-filter="component-form-element"
-                  >
+                  <button class="layui-btn" type="button" id="checkformsubmit">
                     立即提交
                   </button>
                   <button type="reset" class="layui-btn layui-btn-primary">
@@ -233,12 +224,24 @@
             elem: '#LAY-component-form-group-date'
           })
 
-          /* 监听提交 */
-          form.on('submit(component-form-demo1)', function(data) {
-            parent.layer.alert(JSON.stringify(data.field), {
-              title: '最终的提交信息'
+          //提交按钮
+          $('#checkformsubmit').click(function() {
+            $.ajax({
+              headers: {
+                Authorization: window.localStorage.getItem('token')
+              },
+              data: $('#checkform').serialize(),
+              type: 'POST', //提交的方法
+              url: 'http://localhost:3000/check/checkOrder', //提交的地址
+              async: false,
+              success: function(data) {
+                console.log(data)
+              },
+              error: function(request) {
+                //失败的话
+                alert('连接错误')
+              }
             })
-            return false
           })
         })
     </script>
