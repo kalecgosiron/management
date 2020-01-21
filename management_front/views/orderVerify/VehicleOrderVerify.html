@@ -2,19 +2,19 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>开启分页 - 数据表格</title>
+    <title>保单审核</title>
     <meta name="renderer" content="webkit" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
     <link
       rel="stylesheet"
-      href="../layuiadmin/layui/css/layui.css"
+      href="../../layuiadmin/style/admin.css"
       media="all"
     />
-    <link rel="stylesheet" href="../layuiadmin/style/admin.css" media="all" />
   </head>
   <style>
     body {
@@ -35,151 +35,162 @@
     </div>
 
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <script src="../layuiadmin/layui/layui.js"></script>
-    <script>
-      layui.use(['table'], function() {
-        var table = layui.table
-
-        table.render({
-          elem: '#vehicle-table-page',
-          loading: true,
-          url: 'https://localhost:3000/GetVehicleOrderorderVerify',
-          cols: [
-            [
-              { type: 'numbers' },
-              { type: 'checkbox' },
-              {
-                field: 'ordernumber',
-                width: 220,
-                title: '保单号',
-                sort: true,
-                align: 'center'
-              },
-              {
-                field: 'insured',
-                width: 280,
-                title: '被保险人',
-                sort: true,
-                align: 'center'
-              },
-              {
-                field: 'licenseplate',
-                width: 150,
-                title: '车牌',
-                sort: true,
-                align: 'center'
-              },
-              {
-                field: 'ordersignature',
-                width: 120,
-                title: '投保单签章',
-                sort: true,
-                align: 'center'
-              },
-              {
-                field: 'charge',
-                width: 100,
-                title: '经办人',
-                sort: true,
-                align: 'center'
-              },
-              {
-                field: 'date',
-                width: 120,
-                title: '出单日期',
-                sort: true,
-                align: 'center'
-              },
-              {
-                field: 'dispatchclerk',
-                width: 100,
-                title: '出单员',
-                sort: true,
-                align: 'center'
-              },
-              {
-                field: 'orderprintnumber',
-                width: 150,
-                title: '保单印刷号',
-                align: 'center'
-              },
-              {
-                field: 'attributiondepartment',
-                title: '归属部门',
-                sort: true,
-                align: 'center'
-              },
-              { fixed: 'right', align: 'center', toolbar: '#barDemo' } // 这里的toolbar值是模板元素的选择器
-            ]
-          ]
-        })
-      })
-    </script>
+    <script src="../../layuiadmin/layui/layui.js"></script>
     <script type="text/html" id="barDemo">
       <a class="layui-btn layui-btn-xs" lay-event="pass">通过</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="return">退回</a>
     </script>
     <script>
-      layui.use(['table'], function() {
-        var table = layui.table
-        table.on('tool(demo)', function(obj) {
-          var data = obj.data
-          var layEvent = obj.event
-          var tr = obj.tr
-          // 点击通过按钮后的操作
-          if (layEvent === 'pass') {
-            const ordernumber = data.ordernumber
-            layer.confirm('确定通过该保单吗', function(index) {
-              $.ajax({
-                url: 'https://localhost:3000/postPassVehicleOrder',
-                type: 'POST',
-                async: false,
-                data: { ordernumber: ordernumber },
-                success: function(data) {
-                  if (data.msg == 200) {
-                    //删除这一行
-                    obj.del()
-                    //关闭弹框
+      layui
+        .config({
+          base: '../layuiadmin/' //静态资源所在路径
+        })
+        .extend({
+          index: '../layuiadmin/lib/index' //主入口模块
+        })
+        .use(['table'], function() {
+          var table = layui.table
+
+          table.render({
+            elem: '#vehicle-table-page',
+            loading: true,
+            url: 'http://localhost:3000/orderVerify/vehicleOrderVerify',
+            headers: {
+              Authorization: window.localStorage.getItem('token')
+            },
+            cols: [
+              [
+                { type: 'numbers' },
+                { type: 'checkbox' },
+                {
+                  field: 'ordernumber',
+                  width: 220,
+                  title: '保单号',
+                  sort: true,
+                  align: 'center'
+                },
+                {
+                  field: 'insured',
+                  width: 280,
+                  title: '被保险人',
+                  sort: true,
+                  align: 'center'
+                },
+                {
+                  field: 'licenseplate',
+                  width: 150,
+                  title: '车牌',
+                  sort: true,
+                  align: 'center'
+                },
+                {
+                  field: 'ordersignature',
+                  width: 120,
+                  title: '投保单签章',
+                  sort: true,
+                  align: 'center'
+                },
+                {
+                  field: 'charge',
+                  width: 100,
+                  title: '经办人',
+                  sort: true,
+                  align: 'center'
+                },
+                {
+                  field: 'date',
+                  width: 120,
+                  title: '出单日期',
+                  sort: true,
+                  align: 'center'
+                },
+                {
+                  field: 'dispatchclerk',
+                  width: 100,
+                  title: '出单员',
+                  sort: true,
+                  align: 'center'
+                },
+                {
+                  field: 'orderprintnumber',
+                  width: 150,
+                  title: '保单印刷号',
+                  align: 'center'
+                },
+                {
+                  field: 'attributiondepartment',
+                  title: '归属部门',
+                  sort: true,
+                  align: 'center'
+                },
+                { fixed: 'right', align: 'center', toolbar: '#barDemo' } // 这里的toolbar值是模板元素的选择器
+              ]
+            ]
+          })
+          table.on('tool(demo)', function(obj) {
+            var data = obj.data
+            var layEvent = obj.event
+            var tr = obj.tr
+            // 点击通过按钮后的操作
+            if (layEvent === 'pass') {
+              var ordernumber = data.ordernumber
+              layer.confirm('确定通过该保单吗', function(index) {
+                $.ajax({
+                  headers: {
+                    Authorization: window.localStorage.getItem('token')
+                  },
+                  url: 'http://localhost:3000/orderVerify/passVehicleOrder',
+                  type: 'POST',
+                  async: false,
+                  data: { ordernumber: ordernumber },
+                  success: function(data) {
+                    if (data.code == 200) {
+                      // 删除这一行
+                      obj.del()
+                      // 关闭弹框
+                      layer.close(index)
+                      layer.msg('通过成功', { icon: 6 })
+                    } else {
+                      layer.msg('通过失败', { icon: 5 })
+                    }
+                  },
+                  fail: function() {
                     layer.close(index)
-                    layer.msg('通过成功', { icon: 6 })
-                  } else {
                     layer.msg('通过失败', { icon: 5 })
                   }
-                },
-                fail: function() {
-                  layer.close(index)
-                  layer.msg('通过失败', { icon: 5 })
-                }
+                })
               })
-            })
-          } else if (layEvent === 'return') {
-            const ordernumber = data.ordernumber
-            layer.confirm('确定退回该保单吗', function(index) {
-              $.ajax({
-                url: 'https://localhost:3000/postReturnVehicleOrder',
-                type: 'POST',
-                async: false,
-                data: { ordernumber: ordernumber },
-                success: function(data) {
-                  if (data.msg == 200) {
-                    //删除这一行
-                    obj.del()
-                    //关闭弹框
+            } else if (layEvent === 'return') {
+              var ordernumber = data.ordernumber
+              layer.confirm('确定退回该保单吗', function(index) {
+                $.ajax({
+                  headers: {
+                    Authorization: window.localStorage.getItem('token')
+                  },
+                  url: 'http://localhost:3000/orderVerify/returnVehicleOrder',
+                  type: 'POST',
+                  async: false,
+                  data: { ordernumber: ordernumber },
+                  success: function(data) {
+                    if (data.code == 200) {
+                      //删除这一行
+                      obj.del()
+                      //关闭弹框
+                      layer.close(index)
+                      layer.msg('退回成功', { icon: 6 })
+                    } else {
+                      layer.msg('退回失败', { icon: 5 })
+                    }
+                  },
+                  fail: function() {
                     layer.close(index)
-                    layer.msg('退回成功', { icon: 6 })
-                  } else {
-                    layer.msg('退回失败', { icon: 5 })
+                    layer.msg('通过失败', { icon: 5 })
                   }
-                },
-                fail: function() {
-                  layer.close(index)
-                  layer.msg('通过失败', { icon: 5 })
-                }
+                })
               })
-            })
-          }
+            }
+          })
         })
-      })
     </script>
   </body>
 </html>

@@ -12,6 +12,7 @@ var home = require('./routes/home')
 var newOrder = require('./routes/newOrder')
 var upload = require('./routes/upload')
 var check = require('./routes/check')
+var orderVerify = require('./routes/orderVerify')
 // express
 var app = express()
 
@@ -35,8 +36,6 @@ app.use((req, res, next) => {
   }
 })
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
 app.engine('html', ejs.__express)
 app.set('view engine', 'html')
 
@@ -63,6 +62,7 @@ app.use('/home', home)
 app.use('/newOrder', newOrder)
 app.use('/upload', upload)
 app.use('/check', check)
+app.use('/orderVerify', orderVerify)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
