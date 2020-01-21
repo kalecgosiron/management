@@ -55,4 +55,18 @@ router.post('/checkUser', function(req, res, next) {
   })
 })
 
+router.get('/getUserList', function(req, res, next) {
+  if (req.user.authority == 'superadmin') {
+    db.query(userSql.getUserList, [], function(err, results) {
+      if (err) {
+        res.send({ code: 404 })
+      } else {
+        res.send({ code: 0, count: results[1][0].count, data: results[0] })
+      }
+    })
+  } else {
+    res.send({ code: 401, msg: '您没有权限访问' })
+  }
+})
+
 module.exports = router
