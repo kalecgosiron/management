@@ -5,11 +5,15 @@ var jwt = require('jsonwebtoken')
 var db = require('../db/db') // 引入db
 var userSql = require('../db/sql/userSql') // 引入sql语句
 
+var random = require('string-random')
+
 router.post('/checkUser', function(req, res, next) {
   var password = req.body.password.toUpperCase()
   var captext = req.body.captcha
   db.query(userSql.checkCaptextByUuid, [req.body.uuid], function(err, results) {
-    if (captext == results[0].captext) {
+    if (results[0].captext === '') {
+      res.send({ code: 404, msg: '验证码错误' })
+    } else if (captext == results[0].captext) {
       db.query(userSql.checkUserByUsername, [req.body.username], function(
         err,
         results
@@ -46,17 +50,20 @@ router.post('/checkUser', function(req, res, next) {
           })
         } else {
           console.log('登录失败')
-          res.send({ code: 401, msg: '登录失败' })
+          res.send({ code: 404, msg: '登录失败' })
         }
       })
     } else {
-      res.send({ code: 401, msg: '验证码错误' })
+      res.send({ code: 404, msg: '验证码错误' })
     }
   })
 })
 
 router.get('/getUserList', function(req, res, next) {
-  if (req.user.authority == 'superadmin') {
+  if (
+    req.user.authority == 'superadmin' ||
+    req.user.authority == 'documentpost'
+  ) {
     db.query(userSql.getUserList, [], function(err, results) {
       if (err) {
         res.send({ code: 404 })
@@ -67,6 +74,79 @@ router.get('/getUserList', function(req, res, next) {
   } else {
     res.send({ code: 401, msg: '您没有权限访问' })
   }
+})
+
+router.post('/deleteUser', function(req, res, next) {
+  if (
+    req.user.authority == 'superadmin' ||
+    req.user.authority == 'documentpost'
+  ) {
+    var userid = req.body.userid
+    var userauthority = req.body.userauthority
+    if (userauthority == 'documentpost' || userauthority == 'superadmin') {
+      res.send({ code: 401, msg: '该账户不能删除' })
+    } else {
+      db.query(userSql.deleteUserByUserid, [userid], function(err, results) {
+        if (err) {
+          res.send({ code: 404 })
+        } else {
+          res.send({ code: 200, msg: '删除成功' })
+        }
+      })
+    }
+  } else {
+    res.send({ code: 401, msg: '您没有权限访问' })
+  }
+})
+
+router.post('/changeUser', function(req, res, next) {
+  if (
+    req.user.authority == 'superadmin' ||
+    req.user.authority == 'documentpost'
+  ) {
+    console.log(req.body)
+    db.query(
+      userSql.changeUserByUserid,
+      [req.body.department, req.body.userauthority, req.body.userid],
+      function(err, results) {
+        if (err) {
+          res.send({ code: 404 })
+        } else {
+          res.send({ code: 200, msg: '修改成功' })
+        }
+      }
+    )
+  } else {
+    res.send({ code: 401, msg: '您没有权限修改' })
+  }
+})
+
+router.post('/newUser', function(req, res, next) {
+  var username = req.body.username
+  var password = req.body.password.toUpperCase()
+  var userauthority = req.body.userauthority
+  var department = req.body.department
+  var userid = random(10)
+  var jointime = new Date()
+  jointime.toLocaleString() //获取日期与时间
+  db.query(userSql.checkUserid, [userid], function(err, results) {
+    console.log(err)
+    console.log(results[0].count)
+    if (results[0].count >= 1) {
+      var userid = random(10)
+    }
+  })
+  db.query(
+    userSql.createUser,
+    [username, password, userauthority, department, userid, jointime],
+    function(err, results) {
+      if (err) {
+        res.send({ code: 404 })
+      } else {
+        res.send({ code: 200 })
+      }
+    }
+  )
 })
 
 module.exports = router

@@ -27,6 +27,9 @@
         <div class="layui-col-md12">
           <div class="layui-card">
             <div class="layui-card-body">
+              <div style="padding-bottom: 10px;">
+                <a class="layui-btn btn-add btn-default" id="btn-add">新建用户</a>
+              </div>
               <table id="table-page" lay-filter="demo"></table>
             </div>
           </div>
@@ -34,11 +37,13 @@
       </div>
     </div>
 
+    
+
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <script src="../../layuiadmin/layui/layui.js"></script>
     <script type="text/html" id="barDemo">
-      <a class="layui-btn layui-btn-xs" lay-event="pass">修改</a>
-      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="return">删除</a>
+      <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
     </script>
     <script>
       layui
@@ -49,7 +54,23 @@
           index: '../layuiadmin/lib/index' //主入口模块
         })
         .use(['table'], function() {
-          var table = layui.table
+          var table = layui.table,
+          form = layui.form
+
+          //添加采集设备
+          $('#btn-add').on('click', function () {
+              layer.open({
+                  type: 2,
+                  title: '新建用户',
+                  maxmin: true,
+                  area: ['600px', '500px'],
+                  shadeClose: false, //点击遮罩不会关闭
+                  content: 'newUser.html',//添加设备的from表单是在另一个html中，这是弹出方式的第三种方式
+                  end: function () {
+                    window.location.reload();
+                }
+              });
+          });
 
           table.render({
             elem: '#table-page',
@@ -99,65 +120,126 @@
             var layEvent = obj.event
             var tr = obj.tr
             // 点击通过按钮后的操作
-            if (layEvent === 'pass') {
+            if (layEvent === 'edit') {
               var ordernumber = data.ordernumber
-              layer.confirm('确定通过该保单吗', function(index) {
-                $.ajax({
-                  headers: {
-                    Authorization: window.localStorage.getItem('token')
-                  },
-                  url: 'http://localhost:3000/orderVerify/passVehicleOrder',
-                  type: 'POST',
-                  async: false,
-                  data: { ordernumber: ordernumber },
-                  success: function(data) {
-                    if (data.code == 200) {
-                      // 删除这一行
-                      obj.del()
-                      // 关闭弹框
-                      layer.close(index)
-                      layer.msg('通过成功', { icon: 6 })
-                    } else {
-                      layer.msg('通过失败', { icon: 5 })
-                    }
-                  },
-                  fail: function() {
-                    layer.close(index)
-                    layer.msg('通过失败', { icon: 5 })
-                  }
-                })
+              layer.open({
+                //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                type: 1,
+                title: '修改用户信息',
+                area: ['370px', '350px'],
+                content: $('#popUpdate'), //引用的弹出层的页面层的方式加载修改界面表单
               })
-            } else if (layEvent === 'return') {
-              var ordernumber = data.ordernumber
-              layer.confirm('确定退回该保单吗', function(index) {
+              //动态向表传递赋值可以参看文章进行修改界面的更新前数据的显示，当然也是异步请求的要数据的修改数据的获取
+              setFormValue(obj, data)
+            } else if (layEvent === 'delete') {
+              var userid = data.userid
+              var userauthority = data.userauthority
+              layer.confirm('确定删除该账号吗', function(index) {
                 $.ajax({
                   headers: {
                     Authorization: window.localStorage.getItem('token')
                   },
-                  url: 'http://localhost:3000/orderVerify/returnVehicleOrder',
+                  url: 'http://localhost:3000/user/deleteUser',
                   type: 'POST',
                   async: false,
-                  data: { ordernumber: ordernumber },
+                  data: { userid: userid ,userauthority: userauthority},
                   success: function(data) {
                     if (data.code == 200) {
                       //删除这一行
                       obj.del()
                       //关闭弹框
                       layer.close(index)
-                      layer.msg('退回成功', { icon: 6 })
+                      layer.msg('删除成功', { icon: 6 })
                     } else {
-                      layer.msg('退回失败', { icon: 5 })
+                      layer.msg('删除失败', { icon: 5 })
                     }
                   },
                   fail: function() {
                     layer.close(index)
-                    layer.msg('通过失败', { icon: 5 })
+                    layer.msg('删除失败', { icon: 5 })
                   }
                 })
               })
             }
           })
+          function setFormValue(obj,data){
+            form.on('submit(demo11)', function(message) {
+              department = $('#department').val()
+              userauthority = $('#userauthority').val()
+              $.ajax({
+                headers: {
+                  Authorization: window.localStorage.getItem('token')
+                },
+                url:'http://localhost:3000/user/changeUser',
+                type:'POST',
+                async: false,
+                data:{userid:data.userid,department:department,userauthority:userauthority},
+                success:function (msg) {
+                  console.log(msg.code)
+                  if(msg.code==200){
+                    layer.msg("修改成功", {icon: 6});
+                  }else{
+                    layer.msg("修改失败", {icon: 5});
+                  }
+                }
+              })
+            })
+            }
         })
     </script>
+
+    <!--  这里是弹出层的表单信息 -->
+    <!-- 表单的id用于表单的选择，style是在本页隐藏，只有点击编辑才会弹出 -->
+    <div class="layui-row" id="popUpdate" style="display:none;">
+      <div class="layui-col-md10">
+        <form
+          class="layui-form layui-from-pane"
+          style="margin-top:20px"
+          id="changeform"
+        >
+          <div class="layui-form-item">
+            <label class="layui-form-label">归属部门</label>
+            <div class="layui-input-block">
+              <select name="department" lay-filter="department" id="department">
+                <option value="44018403">44018403</option>
+                <option value="44018442" selected="">44018442</option>
+                <option value="44018407">44018407</option>
+                <option value="44018442">44018442</option>
+                <option value="44018447">44018447</option>
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+            
+            <div class="layui-form-item">
+              <label class="layui-form-label">用户权限</label>
+              <div class="layui-input-block">
+                <select name="userauthority" lay-filter="userauthority" id="userauthority">
+                  <option value="superadmin">超级管理员</option>
+                  <option value="departmentmanagement">部门经理</option>
+                  <option value="documentpost">单证岗</option>
+                  <option value="charge" selected="">出单员</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-form-item" style="margin-top:40px">
+            <div class="layui-input-block">
+              <button
+                class="layui-btn  layui-btn-submit"
+                lay-submit=""
+                lay-filter="demo11"
+              >
+                确认修改
+              </button>
+              <button type="reset" class="layui-btn layui-btn-primary">
+                重置
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

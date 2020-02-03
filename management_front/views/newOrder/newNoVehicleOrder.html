@@ -1,257 +1,372 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>新建非车险保单</title>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
-  <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <title>新建非车险保单</title>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link
+      rel="stylesheet"
+      href="../../layuiadmin/layui/css/layui.css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="../../layuiadmin/style/admin.css"
+      media="all"
+    />
+  </head>
+  <body>
     <div class="layui-fluid" id="formsubmit">
-        <div class="layui-row layui-col-space15">
-            <div class="layui-col-md6">
-                <div class="layui-card">
-                <div class="layui-card-header">通过填写信息新建非车险保单</div>
-                    <div class="layui-card-body" style="padding: 15px;">
-                        <form class="layui-form" id="NoVehicleFormPost">
-                            <div class="layui-form-item">
-                                <div class="layui-col-lg6">
-                                    <label class="layui-form-label">保单号</label>
-                                    <div class="layui-input-block" >
-                                        <input type="text" name="ordernumber" autocomplete="off" placeholder="请输入保单号" class="layui-input">
-                                    </div>
-                                </div>
-                                <div class="layui-col-lg6">
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label">出单日期</label>
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="date" id="LAY-component-form-group-date" lay-verify="date" placeholder="年-月-日" autocomplete="off" class="layui-input">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div class="layui-form-item">
-                                <div class="layui-col-lg6">
-                                    <label class="layui-form-label">保单印刷号</label>
-                                    <div class="layui-input-block" >
-                                        <input type="text" name="orderprintnumber" autocomplete="off" placeholder="请输入保单印刷号" class="layui-input">
-                                    </div>
-                                </div>
-                                <div class="layui-col-lg6">
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label">归属部门</label>
-                                        <div class="layui-input-inline">
-                                            <select name="attributiondepartment" lay-verify="required" lay-search="">
-                                            <option value="">直接选择或搜索选择</option>
-                                            <option value="44018447">44018447</option>
-                                            <option value="44018420">44018420</option>
-                                            <option value="44018446">44018446</option>
-                                            <option value="44018403">44018403</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="layui-form-item">
-                                <div class="layui-col-lg6">
-                                    <label class="layui-form-label">经办人</label>
-                                    <div class="layui-input-block" style="width:40%">
-                                        <input type="text" name="charge" autocomplete="off" placeholder="请输入经办人" class="layui-input">
-                                    </div>
-                                </div>
-                                <div class="layui-col-lg6">
-                                    <label class="layui-form-label">出单员</label>
-                                    <div class="layui-input-block" style="width:40%">
-                                        <input type="text" name="dispatchclerk" autocomplete="off" placeholder="请输入出单员" class="layui-input">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="layui-form-item">
-                                <div class="layui-col-lg6">
-                                    <label class="layui-form-label">投保人</label>
-                                    <div class="layui-input-block" style="width:40%">
-                                        <input type="text" name="applicant" autocomplete="off" placeholder="请输入被投保人" class="layui-input">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="layui-form-item">
-                                <div class="layui-col-lg6">
-                                    <label class="layui-form-label">投保单签章</label>
-                                    <div class="layui-input-block">
-                                      <input type="checkbox" name="ordersignature" lay-skin="switch" lay-text="不欠缺|欠缺">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="layui-form-item">
-                                <div class="layui-input-block" style="margin-left: 300px;">
-                                    <button type="button" id="btn" class="layui-btn" lay-filter="component-form-element">立即提交</button>
-                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                                </div>
-                            </div>
-                        </form>
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+          <div class="layui-card">
+            <div class="layui-card-header">通过填写信息新建非车险保单</div>
+            <div class="layui-card-body" style="padding: 15px;">
+              <form class="layui-form" id="NoVehicleFormPost">
+                <div class="layui-form-item">
+                  <div class="layui-col-lg6">
+                    <label class="layui-form-label">保单号</label>
+                    <div class="layui-input-block">
+                      <input
+                        type="text"
+                        name="ordernumber"
+                        autocomplete="off"
+                        placeholder="请输入保单号"
+                        class="layui-input"
+                      />
                     </div>
-                </div>
-            </div>
-            <div class="layui-col-md6">
-                <div class="layui-card">
-                <div class="layui-card-header">通过EXCEL导入新建非车险保单</div>
-                <div class="layui-card-body" style="padding: 15px;">
-                  <form class="layui-form" id="uploadfile">
-                    <div class="layui-form-item">
-                        <div class="layui-upload">
-                            <input type="file" name="excel" id="file" />
-                            <button type="button" id="uploadbtn">点击上传</button>
-                        </div> 
+                  </div>
+                  <div class="layui-col-lg6">
+                    <div class="layui-inline">
+                      <label class="layui-form-label">出单日期</label>
+                      <div class="layui-input-inline">
+                        <input
+                          type="text"
+                          name="date"
+                          id="LAY-component-form-group-date"
+                          lay-verify="date"
+                          placeholder="年-月-日"
+                          autocomplete="off"
+                          class="layui-input"
+                        />
+                      </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
+
+                <div class="layui-form-item">
+                  <div class="layui-col-lg6">
+                    <label class="layui-form-label">保单印刷号</label>
+                    <div class="layui-input-block">
+                      <input
+                        type="text"
+                        name="orderprintnumber"
+                        autocomplete="off"
+                        placeholder="请输入保单印刷号"
+                        class="layui-input"
+                      />
+                    </div>
+                  </div>
+                  <div class="layui-col-lg6">
+                    <div class="layui-inline">
+                      <label class="layui-form-label">归属部门</label>
+                      <div class="layui-input-inline">
+                        <select
+                          name="attributiondepartment"
+                          lay-verify="required"
+                          lay-search=""
+                        >
+                          <option value="">直接选择或搜索选择</option>
+                          <option value="44018447">44018447</option>
+                          <option value="44018420">44018420</option>
+                          <option value="44018446">44018446</option>
+                          <option value="44018403">44018403</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <div class="layui-col-lg6">
+                    <label class="layui-form-label">经办人</label>
+                    <div class="layui-input-block" style="width:40%">
+                      <input
+                        type="text"
+                        name="charge"
+                        autocomplete="off"
+                        placeholder="请输入经办人"
+                        class="layui-input"
+                      />
+                    </div>
+                  </div>
+                  <div class="layui-col-lg6">
+                    <label class="layui-form-label">出单员</label>
+                    <div class="layui-input-block" style="width:40%">
+                      <input
+                        type="text"
+                        name="dispatchclerk"
+                        autocomplete="off"
+                        placeholder="请输入出单员"
+                        class="layui-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <div class="layui-col-lg6">
+                    <label class="layui-form-label">投保人</label>
+                    <div class="layui-input-block" style="width:40%">
+                      <input
+                        type="text"
+                        name="applicant"
+                        autocomplete="off"
+                        placeholder="请输入被投保人"
+                        class="layui-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <div class="layui-col-lg6">
+                    <label class="layui-form-label">投保单签章</label>
+                    <div class="layui-input-block">
+                      <input
+                        type="checkbox"
+                        name="ordersignature"
+                        lay-skin="switch"
+                        lay-text="不欠缺|欠缺"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <div class="layui-input-block" style="margin-left: 300px;">
+                    <button
+                      type="button"
+                      id="btn"
+                      class="layui-btn"
+                      lay-filter="component-form-element"
+                    >
+                      立即提交
+                    </button>
+                    <button type="reset" class="layui-btn layui-btn-primary">
+                      重置
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
+          </div>
         </div>
+        <div class="layui-col-md6">
+          <div class="layui-card">
+            <div class="layui-card-header">通过EXCEL导入新建非车险保单</div>
+            <div class="layui-card-body" style="padding: 15px;">
+              <form class="layui-form" id="uploadfile">
+                <div class="layui-form-item">
+                  <div class="layui-upload">
+                    <input type="file" name="excel" id="file" />
+                    <button type="button" id="uploadbtn">点击上传</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px">
+      <button
+        id="btn_submit"
+        type="button"
+        class="layui-btn"
+        style="display:none"
+      >
+        检查无误，确定上传
+      </button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="../../layuiadmin/layui/layui.js"></script>  
+    <script src="../../layuiadmin/layui/layui.js"></script>
     <script>
-      layui.config({
+      layui
+        .config({
           base: '../../layuiadmin/' //静态资源所在路径
-      }).extend({
+        })
+        .extend({
           index: 'lib/index' //主入口模块
-      }).use(['index', 'form', 'laydate','upload'], function(){
-        var $ = layui.$
-        ,admin = layui.admin
-        ,element = layui.element
-        ,layer = layui.layer
-        ,laydate = layui.laydate
-        ,form = layui.form
-        ,upload = layui.upload;
-        
-        //日期范围
-        laydate.render({
-            elem: '#test6'
-            ,range: true
-        });
+        })
+        .use(['index', 'form', 'laydate', 'upload'], function() {
+          var $ = layui.$,
+            admin = layui.admin,
+            element = layui.element,
+            layer = layui.layer,
+            laydate = layui.laydate,
+            form = layui.form,
+            upload = layui.upload
 
-        //日期选择器
-        form.render(null, 'component-form-group');
+          //日期范围
+          laydate.render({
+            elem: '#test6',
+            range: true
+          })
 
-        laydate.render({
-        elem: '#LAY-component-form-group-date'
-        });
+          //日期选择器
+          form.render(null, 'component-form-group')
 
-        //tablesubmit提交按钮
-        $("#btn_submit").click(function () {
-          console.log("来了")
-          var tabLen = document.getElementById("tableID");
-          var jsonT = "[";
-          for (var i = 1; i < tabLen.rows.length; i++) {
-            jsonT += '{"ordernumber":"' + tabLen.rows[i].cells[0].innerHTML + '","applicant":"' + tabLen.rows[i].cells[1].innerHTML + '","ordersignature":"' + tabLen.rows[i].cells[2].innerHTML + '","charge":"' + tabLen.rows[i].cells[3].innerHTML +  '","date":"' + tabLen.rows[i].cells[4].innerHTML + '","dispatchclerk":"' + tabLen.rows[i].cells[5].innerHTML + '","orderprintnumber":"' + tabLen.rows[i].cells[6].innerHTML + '","attributiondepartment":"' + tabLen.rows[i].cells[7].innerHTML + '"},'
-          }
-          jsonT= jsonT.substr(0, jsonT.length - 1);
-          jsonT += "]";
-          $.ajax({  
-            headers: {
-              Authorization: window.localStorage.getItem('token')
-            },
-            data:{jsonT},
-            type: "POST",   //提交的方法
-            url:"http://localhost:3000/upload/uploadVehicleJson", //提交的地址  
-            async: false,
-            success: function(data) {  //成功
-              console(data)
-            },
-            error: function(request) {  //失败的话
-              alert("连接错误");  
-            },  
-          });
-        });
+          laydate.render({
+            elem: '#LAY-component-form-group-date'
+          })
 
-        //提交按钮
-        $("#btn").click(function () {
-          $.ajax({  
-            headers: {
-              Authorization: window.localStorage.getItem('token')
-            },
-            data:$('#NoVehicleFormPost').serialize(),
-            type: "POST",   //提交的方法
-            url:"http://localhost:3000/newOrder/newNoVehicleOrder", //提交的地址  
-            async: false,  
-            success: function(data) {  //成功
-              alert(data.msg)
-            },
-            error: function(request) {  //失败的话
-              alert("连接错误");  
-            },  
-          });
-        }); 
-
-        $("#uploadbtn").click(function () {
-          var form = new FormData(document.getElementById("uploadfile"));
-          $.ajax({  
-            headers: {
-              Authorization: window.localStorage.getItem('token')
-            },
-            data:form,
-            cache: false,
-            contentType: false,    //不可缺
-            processData: false,    //不可缺
-            type: "POST",   //提交的方法
-            url:"http://localhost:3000/upload/uploadNoVehicle", //提交的地址  
-            async: false,
-            success: function(data) {  //成功
-              var tableColumn = data.table_head.length
-              var tableRow = data.excel_data.length
-              if(data.code == 200){
-                $("#formsubmit").hide()
-                var tableData = "<div class='layui-fluid'><div class='layui-col-md12'><div class='layui-card'><table class='layui-table' id='tableID'><thead><tr>";
-                $.each(data,function(key,value){
-                  //遍历表头
-                  if(key == "table_head" || key == "excel_data"){
-                    if(key == "table_head"){
-                      for(tableHead = 0;tableHead < tableColumn; tableHead++){
-                        tableData += "<th>"
-                        tableData += value[tableHead]
-                        tableData += "</th>"
-                        if(tableHead == tableColumn - 1){
-                          tableData += "</thead><tbody>"
-                        }
-                      }
-                    }
-                    //遍历表格数据
-                    if(key == "excel_data"){
-                      tableData += "<tr>"
-                      for(i = 0;i < tableRow; i++){
-                        for(j = 0;j < tableColumn; j++){
-                          // console.log(value[i])
-                          tableData += "<td>"
-                          tableData += value[i][j]
-                          tableData += "</td>"
-                        }
-                        tableData += "</tr>"
-                      }
-                      //遍历完成之后
-                      tableData +="</tbody></table></div></div><button id='btn_submit' type='submit' class='layui-btn' style='display:block;margin:0 auto'>检查无误，确定上传</button></div>";
-                      $('body').append(tableData);
-                    }
-                  }
-                })
-              }else{
+          //提交按钮
+          $('#btn').click(function() {
+            $.ajax({
+              headers: {
+                Authorization: window.localStorage.getItem('token')
+              },
+              data: $('#NoVehicleFormPost').serialize(),
+              type: 'POST', //提交的方法
+              url: 'http://localhost:3000/newOrder/newNoVehicleOrder', //提交的地址
+              async: false,
+              success: function(data) {
+                //成功
                 alert(data.msg)
+              },
+              error: function(request) {
+                //失败的话
+                alert('连接错误')
               }
-            },
-            error: function(request) {  //失败的话
-              alert("连接错误");
-            },  
-          });
-        }); 
-      });
+            })
+          })
+
+          $('#uploadbtn').click(function() {
+            var form = new FormData(document.getElementById('uploadfile'))
+            $.ajax({
+              headers: {
+                Authorization: window.localStorage.getItem('token')
+              },
+              data: form,
+              cache: false,
+              contentType: false, //不可缺
+              processData: false, //不可缺
+              type: 'POST', //提交的方法
+              url: 'http://localhost:3000/upload/uploadNoVehicle', //提交的地址
+              async: false,
+              success: function(data) {
+                //成功
+                var tableColumn = data.table_head.length
+                var tableRow = data.excel_data.length
+                if (data.code == 200) {
+                  $('#formsubmit').hide()
+                  $('#btn_submit').show()
+                  var tableData =
+                    "<div class='layui-fluid'><div class='layui-col-md12'><div class='layui-card'><table class='layui-table' id='tableID'><thead><tr>"
+                  $.each(data, function(key, value) {
+                    //遍历表头
+                    if (key == 'table_head' || key == 'excel_data') {
+                      if (key == 'table_head') {
+                        for (
+                          tableHead = 0;
+                          tableHead < tableColumn;
+                          tableHead++
+                        ) {
+                          tableData += '<th>'
+                          tableData += value[tableHead]
+                          tableData += '</th>'
+                          if (tableHead == tableColumn - 1) {
+                            tableData += '</thead><tbody>'
+                          }
+                        }
+                      }
+                      //遍历表格数据
+                      if (key == 'excel_data') {
+                        tableData += '<tr>'
+                        for (i = 0; i < tableRow; i++) {
+                          for (j = 0; j < tableColumn; j++) {
+                            // console.log(value[i])
+                            tableData += '<td>'
+                            tableData += value[i][j]
+                            tableData += '</td>'
+                          }
+                          tableData += '</tr>'
+                        }
+                        //遍历完成之后
+                        tableData += '</tbody></table></div></div></div>'
+                        $('body').append(tableData)
+                      }
+                    }
+                  })
+                } else {
+                  alert(data.msg)
+                }
+              },
+              error: function(request) {
+                //失败的话
+                alert('连接错误')
+              }
+            })
+          })
+
+          //tablesubmit提交按钮
+          $('#btn_submit').click(function() {
+            console.log('来了')
+            var tabLen = document.getElementById('tableID')
+            var jsonT = '['
+            for (var i = 1; i < tabLen.rows.length; i++) {
+              jsonT +=
+                '{"ordernumber":"' +
+                tabLen.rows[i].cells[0].innerHTML +
+                '","applicant":"' +
+                tabLen.rows[i].cells[1].innerHTML +
+                '","ordersignature":"' +
+                tabLen.rows[i].cells[2].innerHTML +
+                '","charge":"' +
+                tabLen.rows[i].cells[3].innerHTML +
+                '","date":"' +
+                tabLen.rows[i].cells[4].innerHTML +
+                '","dispatchclerk":"' +
+                tabLen.rows[i].cells[5].innerHTML +
+                '","orderprintnumber":"' +
+                tabLen.rows[i].cells[6].innerHTML +
+                '","attributiondepartment":"' +
+                tabLen.rows[i].cells[7].innerHTML +
+                '"},'
+            }
+            jsonT = jsonT.substr(0, jsonT.length - 1)
+            jsonT += ']'
+            $.ajax({
+              headers: {
+                Authorization: window.localStorage.getItem('token')
+              },
+              data: { jsonT },
+              type: 'POST', //提交的方法
+              url: 'http://localhost:3000/upload/uploadNoVehicleJson', //提交的地址
+              async: false,
+              success: function(data) {
+                //成功
+                if (data.code == 200) {
+                  alert('导入数据库成功')
+                } else {
+                  alert('导入数据库失败,请检查是否存在已有数据')
+                }
+              },
+              error: function(request) {
+                //失败的话
+                alert('连接错误')
+              }
+            })
+          })
+        })
     </script>
-</body>
+  </body>
 </html>

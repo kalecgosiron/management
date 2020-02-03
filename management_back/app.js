@@ -13,6 +13,7 @@ var newOrder = require('./routes/newOrder')
 var upload = require('./routes/upload')
 var check = require('./routes/check')
 var orderVerify = require('./routes/orderVerify')
+var api = require('./routes/api')
 // express
 var app = express()
 
@@ -51,7 +52,12 @@ app.use(
   expressJwt({
     secret: 'xIandsan' // 签名的密钥 或 PublicKey
   }).unless({
-    path: ['/user/checkUser', '/captext/getCaptcha', '/captext/createCapthca'] // 指定路径不经过 Token 解析
+    path: [
+      '/user/checkUser',
+      '/captext/getCaptcha',
+      '/captext/createCapthca',
+      '/api/checkUser'
+    ] // 指定路径不经过 Token 解析
   })
 )
 
@@ -63,6 +69,7 @@ app.use('/newOrder', newOrder)
 app.use('/upload', upload)
 app.use('/check', check)
 app.use('/orderVerify', orderVerify)
+app.use('/api', api)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -57,48 +57,60 @@ router.post('/uploadVehicleJson', function(req, res, next) {
   var table_data = JSON.parse(req.body.jsonT)
   var len = Object.keys(table_data).length
   var sql_total = ''
-  console.log(table_data)
-  var createtime = new Date()
-  createtime.toLocaleString() //获取日期与时间
+  // console.log(table_data)
+  var timesNow = new Date()
+  createtime =
+    timesNow.getFullYear() +
+    '-' +
+    (timesNow.getMonth() + 1) +
+    '-' +
+    timesNow.getDate() +
+    ' ' +
+    timesNow.getHours() +
+    ':' +
+    timesNow.getMinutes() +
+    ':' +
+    timesNow.getSeconds()
   var createuser = req.user.username
-  // for (i = 0; i < len; i++) {
-  //   var sql =
-  //     "INSERT INTO vehicleinsurance set ordernumber='" +
-  //     table_data[i].ordernumber +
-  //     "',insured='" +
-  //     table_data[i].insured +
-  //     "',licenseplate='" +
-  //     table_data[i].licenseplate +
-  //     "',ordersignature='" +
-  //     table_data[i].ordersignature +
-  //     "',charge='" +
-  //     table_data[i].charge +
-  //     "',date='" +
-  //     table_data[i].date +
-  //     "',dispatchclerk='" +
-  //     table_data[i].dispatchclerk +
-  //     "',orderprintnumber='" +
-  //     table_data[i].orderprintnumber +
-  //     "',attributiondepartment='" +
-  //     table_data[i].attributiondepartment +
-  //     "',createtime='" +
-  //     table_data[i].createtime +
-  //     "',createuser='" +
-  //     table_data[i].createuser +
-  //     "';"
-  //   sql_total += sql
-  // }
-  // try {
-  //   db.query(sql_total, [], function(err, results) {
-  //     if (err) {
-  //       res.send({ code: 500, msg: '导入数据库失败' })
-  //     } else {
-  //       res.send({ code: 200, msg: '导入数据库成功' })
-  //     }
-  //   })
-  // } catch (e) {
-  //   res.send({ code: 500, msg: '导入数据库失败' })
-  // }
+  for (i = 0; i < len; i++) {
+    var sql =
+      "INSERT INTO vehicleinsurance set ordernumber='" +
+      table_data[i].ordernumber +
+      "',insured='" +
+      table_data[i].insured +
+      "',licenseplate='" +
+      table_data[i].licenseplate +
+      "',ordersignature='" +
+      table_data[i].ordersignature +
+      "',charge='" +
+      table_data[i].charge +
+      "',date='" +
+      table_data[i].date +
+      "',dispatchclerk='" +
+      table_data[i].dispatchclerk +
+      "',orderprintnumber='" +
+      table_data[i].orderprintnumber +
+      "',attributiondepartment='" +
+      table_data[i].attributiondepartment +
+      "',createtime='" +
+      createtime +
+      "',createuser='" +
+      createuser +
+      "';"
+    sql_total += sql
+  }
+  console.log(sql_total)
+  try {
+    db.query(sql_total, [], function(err, results) {
+      if (err) {
+        res.send({ code: 500, msg: '导入数据库失败' })
+      } else {
+        res.send({ code: 200, msg: '导入数据库成功' })
+      }
+    })
+  } catch (e) {
+    res.send({ code: 500, msg: '导入数据库失败' })
+  }
 })
 
 router.post('/uploadNoVehicle', function(req, res, next) {
@@ -145,6 +157,64 @@ router.post('/uploadNoVehicle', function(req, res, next) {
     })
   } else {
     res.send({ code: 401, msg: '您没有权限进行此操作' })
+  }
+})
+
+router.post('/uploadNoVehicleJson', function(req, res, next) {
+  var table_data = JSON.parse(req.body.jsonT)
+  var len = Object.keys(table_data).length
+  var sql_total = ''
+  // console.log(table_data)
+  var timesNow = new Date()
+  createtime =
+    timesNow.getFullYear() +
+    '-' +
+    (timesNow.getMonth() + 1) +
+    '-' +
+    timesNow.getDate() +
+    ' ' +
+    timesNow.getHours() +
+    ':' +
+    timesNow.getMinutes() +
+    ':' +
+    timesNow.getSeconds()
+  var createuser = req.user.username
+  for (i = 0; i < len; i++) {
+    var sql =
+      "INSERT INTO novehicleinsurance set ordernumber='" +
+      table_data[i].ordernumber +
+      "',applicant='" +
+      table_data[i].applicant +
+      "',ordersignature='" +
+      table_data[i].ordersignature +
+      "',charge='" +
+      table_data[i].charge +
+      "',date='" +
+      table_data[i].date +
+      "',dispatchclerk='" +
+      table_data[i].dispatchclerk +
+      "',orderprintnumber='" +
+      table_data[i].orderprintnumber +
+      "',attributiondepartment='" +
+      table_data[i].attributiondepartment +
+      "',createtime='" +
+      createtime +
+      "',createuser='" +
+      createuser +
+      "';"
+    sql_total += sql
+  }
+  console.log(sql_total)
+  try {
+    db.query(sql_total, [], function(err, results) {
+      if (err) {
+        res.send({ code: 500, msg: '导入数据库失败' })
+      } else {
+        res.send({ code: 200, msg: '导入数据库成功' })
+      }
+    })
+  } catch (e) {
+    res.send({ code: 500, msg: '导入数据库失败' })
   }
 })
 

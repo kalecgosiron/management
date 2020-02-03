@@ -106,7 +106,7 @@
     <div class="layui-container layui-anim layui-anim-upbit">
       <div class="admin-login-background">
         <div class="layui-form login-form">
-          <form class="layui-form" action="">
+          <form class="layui-form">
             <div class="layui-form-item logo-title">
               <h1>保单管理系统</h1>
             </div>
@@ -242,7 +242,7 @@
           })
         })
 
-        // // 进行登录操作
+        // 进行登录操作
         form.on('submit(login)', function(data) {
           data = data.field
           if (data.username == '') {
