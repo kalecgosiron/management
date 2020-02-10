@@ -34,7 +34,8 @@ router.post('/checkUser', function(req, res, next) {
                   {
                     username: user.username,
                     userid: user.userid,
-                    authority: user.userauthority
+                    authority: user.userauthority,
+                    department: user.department
                   },
                   'xIandsan',
                   { expiresIn: 3600 * 24 }
@@ -49,8 +50,7 @@ router.post('/checkUser', function(req, res, next) {
             }
           })
         } else {
-          console.log('登录失败')
-          res.send({ code: 404, msg: '登录失败' })
+          res.send({ code: 404, msg: '用户名或密码错误' })
         }
       })
     } else {
@@ -59,7 +59,7 @@ router.post('/checkUser', function(req, res, next) {
   })
 })
 
-router.get('/getUserList', function(req, res, next) {
+router.post('/getUserList', function(req, res, next) {
   if (
     req.user.authority == 'superadmin' ||
     req.user.authority == 'documentpost'
@@ -147,6 +147,32 @@ router.post('/newUser', function(req, res, next) {
       }
     }
   )
+})
+
+// 修改密码
+router.post('/changePassword', function(req, res, next) {
+  var userid = req.user.userid
+  var oldPassword = req.body.oldPassword
+  var password = req.body.password.toUpperCase()
+  var repassword = req.body.repassword
+  db.query(userSql.checkPasswordByUserid, [userid], function(err, results) {
+    if (err) {
+      res.send({ code: 404, msg: '修改密码失败' })
+    } else {
+      if ((oldPassword = results[0].password)) {
+        db.query(userSql.changePassword, [password, userid], function(
+          err,
+          results
+        ) {
+          if (err) {
+            res.send({ code: 404, msg: '修改密码失败' })
+          } else {
+            res.send({ code: 200, msg: '修改密码成功' })
+          }
+        })
+      }
+    }
+  })
 })
 
 module.exports = router

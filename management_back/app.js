@@ -14,6 +14,8 @@ var upload = require('./routes/upload')
 var check = require('./routes/check')
 var orderVerify = require('./routes/orderVerify')
 var api = require('./routes/api')
+var department = require('./routes/department')
+var employee = require('./routes/employee')
 // express
 var app = express()
 
@@ -70,6 +72,8 @@ app.use('/upload', upload)
 app.use('/check', check)
 app.use('/orderVerify', orderVerify)
 app.use('/api', api)
+app.use('/department', department)
+app.use('/employee', employee)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

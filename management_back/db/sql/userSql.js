@@ -9,7 +9,9 @@ var userSql = {
     'UPDATE user set department=?,userauthority=? where userid=?',
   createUser:
     'INSERT INTO user set username=?,password=?,userauthority=?,department=?,userid=?,jointime=?',
-  checkUserid: 'select count(*) as count from user where userid=?'
+  checkUserid: 'select count(*) as count from user where userid=?',
+  checkPasswordByUserid: 'select password from user where userid = ?',
+  changePassword: 'UPDATE user set password = ? where userid = ?'
 }
 
 module.exports = userSql

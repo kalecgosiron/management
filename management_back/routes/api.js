@@ -52,7 +52,7 @@ router.get('/getAddressbookVehicleInsurance', function(req, res, next) {
     if (err) {
       res.send({ code: 404, message: '资料不存在', affextedRows: 0 })
     } else {
-      console.log(results)
+      // console.log(results)
       res.send({ results: results })
     }
   })
@@ -63,8 +63,6 @@ router.get('/vehicleInsuranceOrderList', function(req, res, next) {
   var daytype = req.query.daytype
   var name = req.query.name
   if (daytype == 1) {
-    // const sqlStr =
-    //   "select ordernumber,insured,licenseplate,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from `车险` where date<curdate()-interval 90 day && charge=?"
     db.query(apiSql.getInfoByName1, [name], (err, results) => {
       if (err) {
         res.json({
@@ -81,8 +79,6 @@ router.get('/vehicleInsuranceOrderList', function(req, res, next) {
       }
     })
   } else if (daytype == 2) {
-    // const sqlStr =
-    //   "select ordernumber,insured,licenseplate,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from `车险` where date>curdate()-interval 90 day && date<curdate()-interval 60 day && charge=?"
     db.query(apiSql.getInfoByName2, name, (err, results) => {
       if (err)
         return res.json({
@@ -117,8 +113,6 @@ router.get('/vehicleInsuranceOrderList', function(req, res, next) {
       })
     })
   } else if (daytype == 3) {
-    // const sqlStr =
-    //   "select ordernumber,insured,licenseplate,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from `车险` where date>curdate()-interval 60 day && charge=?"
     db.query(apiSql.getInfoByName3, name, (err, results) => {
       if (err)
         return res.json({
@@ -158,8 +152,6 @@ router.get('/vehicleInsuranceOrderList', function(req, res, next) {
 // 车险保单提交审核
 router.post('/vehicleOrderComplete', function(req, res, next) {
   var ordernumber = req.body.ordernumber
-  // console.log(req.body)
-  // console.log(ordernumber)
   db.query(apiSql.vehicleOrderComplete, [ordernumber], (err, results) => {
     if (results.affectedRows == 1) {
       res.json({ code: 200, message: '提交成功' })
@@ -181,13 +173,14 @@ router.get('/getaddressbooknovehicleinsurance', function(req, res, next) {
   })
 })
 
+// 获取非车险不同类型的保单列表
 router.post('/novehicleinsuranceorderlist', function(req, res, next) {
   var daytype = req.body.daytype
   var name = req.body.name
   if (daytype == 1) {
-    const sqlStr =
-      "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment from novehicleinsurance where date<curdate()-interval 90 day && charge=?"
-    conn.query(sqlStr, name, (err, results) => {
+    // const sqlStr =
+    //   "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date<curdate()-interval 90 day && charge=?"
+    db.query(apiSql.getInfoByName4, name, (err, results) => {
       if (err)
         return res.json({
           err_code: 404,
@@ -201,9 +194,9 @@ router.post('/novehicleinsuranceorderlist', function(req, res, next) {
       })
     })
   } else if (daytype == 2) {
-    const sqlStr =
-      "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment from novehicleinsurance where date>curdate()-interval 90 day && date<curdate()-interval 60 day && charge=?"
-    conn.query(sqlStr, name, (err, results) => {
+    // const sqlStr =
+    //   "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date>curdate()-interval 90 day && date<curdate()-interval 60 day && charge=?"
+    db.query(apiSql.getInfoByName5, name, (err, results) => {
       if (err)
         return res.json({
           err_code: 404,
@@ -237,9 +230,9 @@ router.post('/novehicleinsuranceorderlist', function(req, res, next) {
       })
     })
   } else if (daytype == 3) {
-    const sqlStr =
-      "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment from novehicleinsurance where date>curdate()-interval 60 day && charge=?"
-    conn.query(sqlStr, name, (err, results) => {
+    // const sqlStr =
+    //   "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date>curdate()-interval 60 day && charge=?"
+    db.query(apiSql.getInfoByName6, name, (err, results) => {
       if (err)
         return res.json({
           err_code: 404,
@@ -273,6 +266,18 @@ router.post('/novehicleinsuranceorderlist', function(req, res, next) {
       })
     })
   }
+})
+
+// 非车险保单提交审核
+router.post('/noVehicleOrderComplete', function(req, res, next) {
+  var ordernumber = req.body.ordernumber
+  db.query(apiSql.noVehicleOrderComplete, [ordernumber], (err, results) => {
+    if (results.affectedRows == 1) {
+      res.json({ code: 200, message: '提交成功' })
+    } else {
+      res.json({ code: 404, message: '提交失败' })
+    }
+  })
 })
 
 module.exports = router

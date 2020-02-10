@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>用户列表</title>
+    <title>员工管理</title>
     <meta name="renderer" content="webkit" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta
@@ -28,7 +28,7 @@
           <div class="layui-card">
             <div class="layui-card-body">
               <div style="padding-bottom: 10px;">
-                <a class="layui-btn btn-add btn-default" id="btn-add">新建用户</a>
+                <a class="layui-btn btn-add btn-default" id="btn-add">新建员工</a>
               </div>
               <table id="table-page" lay-filter="demo"></table>
             </div>
@@ -44,7 +44,6 @@
     <script type="text/html" id="barDemo">
       <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-      <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="reset">重置密码</a>
     </script>
     <script>
       layui
@@ -62,11 +61,11 @@
           $('#btn-add').on('click', function () {
               layer.open({
                   type: 2,
-                  title: '新建用户',
+                  title: '新建员工',
                   maxmin: true,
                   area: ['600px', '500px'],
                   shadeClose: false, //点击遮罩不会关闭
-                  content: 'newUser.html',//添加设备的from表单是在另一个html中，这是弹出方式的第三种方式
+                  content: 'newEmployee.html',//添加设备的from表单是在另一个html中，这是弹出方式的第三种方式
                   end: function () {
                     window.location.reload();
                 }
@@ -76,40 +75,28 @@
           table.render({
             elem: '#table-page',
             loading: true,
-            url: 'http://localhost:3000/user/getUserList',
+            url: 'http://localhost:3000/employee/getAllEmployee',
+            method: 'post',
             headers: {
               Authorization: window.localStorage.getItem('token')
             },
-            method: 'POST',
             cols: [
               [
                 {
-                  field: 'userid',
-                  title: '用户id',
-                  sort: true,
-                  align: 'center'
-                },
-                {
-                  field: 'username',
-                  title: '用户名',
-                  sort: true,
-                  align: 'center'
-                },
-                {
-                  field: 'userauthority',
-                  title: '用户权限',
-                  sort: true,
-                  align: 'center'
-                },
-                {
-                  field: 'jointime',
-                  title: '注册时间',
+                  field: 'employeeid',
+                  title: '员工id',
                   sort: true,
                   align: 'center'
                 },
                 {
                   field: 'department',
                   title: '归属部门',
+                  sort: true,
+                  align: 'center'
+                },
+                {
+                  field: 'name',
+                  title: '姓名',
                   sort: true,
                   align: 'center'
                 },
@@ -134,17 +121,16 @@
               //动态向表传递赋值可以参看文章进行修改界面的更新前数据的显示，当然也是异步请求的要数据的修改数据的获取
               setFormValue(obj, data)
             } else if (layEvent === 'delete') {
-              var userid = data.userid
-              var userauthority = data.userauthority
+              var employeeid = data.employeeid
               layer.confirm('确定删除该账号吗', function(index) {
                 $.ajax({
                   headers: {
                     Authorization: window.localStorage.getItem('token')
                   },
-                  url: 'http://localhost:3000/user/deleteUser',
+                  url: 'http://localhost:3000/employee/deleteEmployee',
                   type: 'POST',
                   async: false,
-                  data: { userid: userid ,userauthority: userauthority},
+                  data: { employeeid: employeeid},
                   success: function(data) {
                     if (data.code == 200) {
                       //删除这一行
@@ -204,28 +190,17 @@
             <div class="layui-input-block">
               <select name="department" lay-filter="department" id="department">
                 <option value="车队业务部">车队业务部</option>
-                <option value="车商业务部" selected="">车商业务部</option>
+                <option value="车商业务部">车商业务部</option>
                 <option value="街口营业部">街口营业部</option>
                 <option value="修理厂业务部">修理厂业务部</option>
                 <option value="政企项目部">政企项目部</option>
                 <option value="非车险/重要客户业务部">非车险/重要客户业务部</option>
                 <option value="新渠道业务部/V盟业务部">新渠道业务部/V盟业务部</option>
-                <option value="其他">其他</option>
+                <option value="其他" selected="">其他</option>
               </select>
             </div>
           </div>
             
-            <div class="layui-form-item">
-              <label class="layui-form-label">用户权限</label>
-              <div class="layui-input-block">
-                <select name="userauthority" lay-filter="userauthority" id="userauthority">
-                  <option value="superadmin">超级管理员</option>
-                  <option value="departmentmanagement">部门经理</option>
-                  <option value="documentpost">单证岗</option>
-                  <option value="charge" selected="">出单员</option>
-                </select>
-              </div>
-            </div>
           </div>
 
           <div class="layui-form-item" style="margin-top:40px">

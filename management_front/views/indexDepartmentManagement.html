@@ -65,8 +65,7 @@
                 <cite id="username"></cite>
               </a>
               <dl class="layui-nav-child">
-                <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                <dd><a lay-href="set/password.html">修改密码</a></dd>
                 <hr />
                 <dd style="text-align: center;">
                   <a href="login.html" onclick="logout()">退出</a>
@@ -99,26 +98,33 @@
                 </a>
               </li>
 
-              <li data-name="orderList" class="layui-nav-item">
-                <a
-                  href="javascript:;"
-                  lay-tips="部门经理"
-                  lay-direction="2"
-                  lay-href="departmentManager/departmentManager.html"
-                >
-                  <i class="layui-icon layui-icon-user"></i>
-                  <cite>部门经理</cite>
+              <li data-name="newOrder" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="新建保单" lay-direction="2">
+                  <i class="layui-icon layui-icon-template"></i>
+                  <cite>部门经理保单列表</cite>
                 </a>
+                <dl class="layui-nav-child">
+                  <a
+                    href="javascript:;"
+                    lay-href="departmentManager/vehicleOrderList.html"
+                    >车险列表</a
+                  >
+                  <a
+                    href="javascript:;"
+                    lay-href="departmentManager/noVehicleOrderList.html"
+                    >非车险列表</a
+                  >
+                </dl>
               </li>
               <li data-name="user" class="layui-nav-item">
                 <a
                   href="javascript:;"
                   lay-tips="用户"
                   lay-direction="2"
-                  lay-href="userlist.html"
+                  lay-href="departmentManager/memberList.html"
                 >
                   <i class="layui-icon layui-icon-user"></i>
-                  <cite>用户</cite>
+                  <cite>部门成员</cite>
                 </a>
               </li>
               <li data-name="set" class="layui-nav-item">
@@ -127,8 +133,7 @@
                   <cite>设置</cite>
                 </a>
                 <dl class="layui-nav-child">
-                  <a lay-href="set/user/info.html">基本资料</a>
-                  <a lay-href="set/user/password.html">修改密码</a>
+                  <a lay-href="set/password.html">修改密码</a>
                 </dl>
               </li>
             </ul>
@@ -207,9 +212,9 @@
           base: '../layuiadmin/' //静态资源所在路径
         })
         .extend({
-          index: 'lib/index' //主入口模块
+          index: '../layuiadmin/lib/index' //主入口模块
         })
-        .use('index', function() {
+        .use(['index'], function() {
           var $ = layui.jquery,
             layer = layui.layer
           layer.ready(function() {

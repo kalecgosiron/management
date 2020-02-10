@@ -50,11 +50,11 @@
         })
         .use(['table'], function() {
           var table = layui.table
-
           table.render({
             elem: '#vehicle-table-page',
             loading: true,
-            url: 'http://localhost:3000/orderVerify/vehicleOrderVerify',
+            method: 'post',
+            url: 'http://localhost:3000/department/getDepartmentNoVehicleOrder',
             headers: {
               Authorization: window.localStorage.getItem('token')
             },
@@ -70,16 +70,9 @@
                   align: 'center'
                 },
                 {
-                  field: 'insured',
+                  field: 'applicant',
                   width: 280,
-                  title: '被保险人',
-                  sort: true,
-                  align: 'center'
-                },
-                {
-                  field: 'licenseplate',
-                  width: 150,
-                  title: '车牌',
+                  title: '投保人',
                   sort: true,
                   align: 'center'
                 },
@@ -122,73 +115,9 @@
                   title: '归属部门',
                   sort: true,
                   align: 'center'
-                },
-                { fixed: 'right', align: 'center', toolbar: '#barDemo' } // 这里的toolbar值是模板元素的选择器
+                }
               ]
             ]
-          })
-          table.on('tool(demo)', function(obj) {
-            var data = obj.data
-            var layEvent = obj.event
-            var tr = obj.tr
-            // 点击通过按钮后的操作
-            if (layEvent === 'pass') {
-              var ordernumber = data.ordernumber
-              layer.confirm('确定通过该保单吗', function(index) {
-                $.ajax({
-                  headers: {
-                    Authorization: window.localStorage.getItem('token')
-                  },
-                  url: 'http://localhost:3000/orderVerify/passVehicleOrder',
-                  type: 'POST',
-                  async: false,
-                  data: { ordernumber: ordernumber },
-                  success: function(data) {
-                    if (data.code == 200) {
-                      // 删除这一行
-                      obj.del()
-                      // 关闭弹框
-                      layer.close(index)
-                      layer.msg('通过成功', { icon: 6 })
-                    } else {
-                      layer.msg('通过失败', { icon: 5 })
-                    }
-                  },
-                  fail: function() {
-                    layer.close(index)
-                    layer.msg('通过失败', { icon: 5 })
-                  }
-                })
-              })
-            } else if (layEvent === 'return') {
-              var ordernumber = data.ordernumber
-              layer.confirm('确定退回该保单吗', function(index) {
-                $.ajax({
-                  headers: {
-                    Authorization: window.localStorage.getItem('token')
-                  },
-                  url: 'http://localhost:3000/orderVerify/returnVehicleOrder',
-                  type: 'POST',
-                  async: false,
-                  data: { ordernumber: ordernumber },
-                  success: function(data) {
-                    if (data.code == 200) {
-                      //删除这一行
-                      obj.del()
-                      //关闭弹框
-                      layer.close(index)
-                      layer.msg('退回成功', { icon: 6 })
-                    } else {
-                      layer.msg('退回失败', { icon: 5 })
-                    }
-                  },
-                  fail: function() {
-                    layer.close(index)
-                    layer.msg('通过失败', { icon: 5 })
-                  }
-                })
-              })
-            }
           })
         })
     </script>
