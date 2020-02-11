@@ -136,17 +136,24 @@ router.post('/newUser', function(req, res, next) {
       var userid = random(10)
     }
   })
-  db.query(
-    userSql.createUser,
-    [username, password, userauthority, department, userid, jointime],
-    function(err, results) {
-      if (err) {
-        res.send({ code: 404 })
-      } else {
-        res.send({ code: 200 })
-      }
+  // 查询有无重复的用户名
+  db.query(userSql.checkUserName, [username], function(err, results) {
+    if (results[0].count >= 1) {
+      res.send({ code: 500, msg: '用户名重复，无法新建' })
+    } else {
+      db.query(
+        userSql.createUser,
+        [username, password, userauthority, department, userid, jointime],
+        function(err, results) {
+          if (err) {
+            res.send({ code: 404 })
+          } else {
+            res.send({ code: 200 })
+          }
+        }
+      )
     }
-  )
+  })
 })
 
 // 修改密码
@@ -174,5 +181,30 @@ router.post('/changePassword', function(req, res, next) {
     }
   })
 })
+
+router.post('/resetPassword', function(req, res, next) {
+  if (
+    req.user.authority == 'superadmin' ||
+    req.user.authority == 'documentpost'
+  ) {
+    var userid = req.body.userid
+    var userauthority = req.body.userauthority
+    if (userauthority == 'documentpost' || userauthority == 'superadmin') {
+      res.send({ code: 401, msg: '该账户不能重置' })
+    } else {
+      db.query(userSql.resetPasswordByUserid, [userid], function(err, results) {
+        if (err) {
+          res.send({ code: 404, msg: '重置密码失败' })
+        } else {
+          res.send({ code: 200, msg: '重置密码成功' })
+        }
+      })
+    }
+  } else {
+    res.send({ code: 401, msg: '您没有权限访问' })
+  }
+})
+
+// 重置密码
 
 module.exports = router

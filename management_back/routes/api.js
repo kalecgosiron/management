@@ -48,6 +48,21 @@ router.post('/checkUser', function(req, res, next) {
 
 // 获取车险人员通讯录
 router.get('/getAddressbookVehicleInsurance', function(req, res, next) {
+  // 后台更新数据操作
+  var dic = new Array()
+  db.query(apiSql.getEmployeeData, (err, results) => {
+    // console.log(results)
+    for (i = 0; i < results.length; i++) {
+      dic[results[i].charge] = results[i].count
+    }
+    // console.log(dic)
+    for (var key in dic) {
+      // console.log('key: ' + key + ' ,value: ' + dic[key])
+      db.query(apiSql.updateEmployeeData, [dic[key], key], (err, results) => {})
+    }
+  })
+
+  // 获取员工车险资料
   db.query(apiSql.getAddressbookVehicleInsurance, (err, results) => {
     if (err) {
       res.send({ code: 404, message: '资料不存在', affextedRows: 0 })
@@ -163,7 +178,25 @@ router.post('/vehicleOrderComplete', function(req, res, next) {
 
 // 获取非车险通讯录
 router.get('/getaddressbooknovehicleinsurance', function(req, res, next) {
-  const sqlStr = 'SELECT * FROM employee where novehicleinsurancequantity > 0'
+  // const sqlStr = 'SELECT * FROM employee where novehicleinsurancequantity > 0'
+  // 后台更新数据操作
+  var noVehicleDic = new Array()
+  db.query(apiSql.getEmployeeNoVehicleData, (err, results) => {
+    // console.log(results)
+    for (i = 0; i < results.length; i++) {
+      noVehicleDic[results[i].charge] = results[i].count
+    }
+    // console.log(dic)
+    for (var key in noVehicleDic) {
+      // console.log('key: ' + key + ' ,value: ' + noVehicleDic[key])
+      db.query(
+        apiSql.updateEmployeeNoVehicleData,
+        [noVehicleDic[key], key],
+        (err, results) => {}
+      )
+    }
+  })
+
   db.query(apiSql.getAddressbookNoVehicleInsurance, (err, results) => {
     if (err) {
       res.json({ code: 404, message: '资料不存在', affextedRows: 0 })
