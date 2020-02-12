@@ -44,10 +44,27 @@ router.post('/checkUser', function(req, res, next) {
       })
     }
   })
-})
-
-// 获取车险人员通讯录
-router.get('/getAddressbookVehicleInsurance', function(req, res, next) {
+  // 后台更新数据操作
+  var noVehicleDic = new Array()
+  // 将保单数量重置为0
+  db.query(apiSql.resetNoVehicleinsurancequantity, (err, results) => {})
+  // 刷新保单数量
+  db.query(apiSql.getEmployeeNoVehicleData, (err, results) => {
+    // console.log(results)
+    for (i = 0; i < results.length; i++) {
+      noVehicleDic[results[i].charge] = results[i].count
+    }
+    // console.log(dic)
+    for (var key in noVehicleDic) {
+      // console.log('key: ' + key + ' ,value: ' + noVehicleDic[key])
+      db.query(
+        apiSql.updateEmployeeNoVehicleData,
+        [noVehicleDic[key], key],
+        (err, results) => {}
+      )
+    }
+  })
+  console.log('刷新成功')
   // 后台更新数据操作
   var dic = new Array()
   // 将保单数量重置为0
@@ -64,7 +81,11 @@ router.get('/getAddressbookVehicleInsurance', function(req, res, next) {
       db.query(apiSql.updateEmployeeData, [dic[key], key], (err, results) => {})
     }
   })
+  console.log('刷新第二个')
+})
 
+// 获取车险人员通讯录
+router.get('/getAddressbookVehicleInsurance', function(req, res, next) {
   // 获取员工车险资料
   db.query(apiSql.getAddressbookVehicleInsurance, (err, results) => {
     if (err) {
@@ -187,27 +208,6 @@ router.post('/vehicleOrderComplete', function(req, res, next) {
 // 获取非车险通讯录
 router.get('/getaddressbooknovehicleinsurance', function(req, res, next) {
   // const sqlStr = 'SELECT * FROM employee where novehicleinsurancequantity > 0'
-  // 后台更新数据操作
-  var noVehicleDic = new Array()
-
-  // 将保单数量重置为0
-  db.query(apiSql.resetNoVehicleinsurancequantity, (err, results) => {})
-  // 刷新保单数量
-  db.query(apiSql.getEmployeeNoVehicleData, (err, results) => {
-    // console.log(results)
-    for (i = 0; i < results.length; i++) {
-      noVehicleDic[results[i].charge] = results[i].count
-    }
-    // console.log(dic)
-    for (var key in noVehicleDic) {
-      // console.log('key: ' + key + ' ,value: ' + noVehicleDic[key])
-      db.query(
-        apiSql.updateEmployeeNoVehicleData,
-        [noVehicleDic[key], key],
-        (err, results) => {}
-      )
-    }
-  })
 
   db.query(apiSql.getAddressbookNoVehicleInsurance, (err, results) => {
     if (err) {
