@@ -50,6 +50,9 @@ router.post('/checkUser', function(req, res, next) {
 router.get('/getAddressbookVehicleInsurance', function(req, res, next) {
   // 后台更新数据操作
   var dic = new Array()
+  // 将保单数量重置为0
+  db.query(apiSql.resetVehicleinsurancequantity, (err, results) => {})
+  // 刷新保单数量
   db.query(apiSql.getEmployeeData, (err, results) => {
     // console.log(results)
     for (i = 0; i < results.length; i++) {
@@ -166,14 +169,19 @@ router.get('/vehicleInsuranceOrderList', function(req, res, next) {
 
 // 车险保单提交审核
 router.post('/vehicleOrderComplete', function(req, res, next) {
+  var username = req.user.username
   var ordernumber = req.body.ordernumber
-  db.query(apiSql.vehicleOrderComplete, [ordernumber], (err, results) => {
-    if (results.affectedRows == 1) {
-      res.json({ code: 200, message: '提交成功' })
-    } else {
-      res.json({ code: 404, message: '提交失败' })
+  db.query(
+    apiSql.vehicleOrderComplete,
+    [username, ordernumber],
+    (err, results) => {
+      if (results.affectedRows == 1) {
+        res.json({ code: 200, message: '提交成功' })
+      } else {
+        res.json({ code: 404, message: '提交失败' })
+      }
     }
-  })
+  )
 })
 
 // 获取非车险通讯录
@@ -181,6 +189,10 @@ router.get('/getaddressbooknovehicleinsurance', function(req, res, next) {
   // const sqlStr = 'SELECT * FROM employee where novehicleinsurancequantity > 0'
   // 后台更新数据操作
   var noVehicleDic = new Array()
+
+  // 将保单数量重置为0
+  db.query(apiSql.resetNoVehicleinsurancequantity, (err, results) => {})
+  // 刷新保单数量
   db.query(apiSql.getEmployeeNoVehicleData, (err, results) => {
     // console.log(results)
     for (i = 0; i < results.length; i++) {
@@ -303,14 +315,19 @@ router.post('/novehicleinsuranceorderlist', function(req, res, next) {
 
 // 非车险保单提交审核
 router.post('/noVehicleOrderComplete', function(req, res, next) {
+  var username = req.user.username
   var ordernumber = req.body.ordernumber
-  db.query(apiSql.noVehicleOrderComplete, [ordernumber], (err, results) => {
-    if (results.affectedRows == 1) {
-      res.json({ code: 200, message: '提交成功' })
-    } else {
-      res.json({ code: 404, message: '提交失败' })
+  db.query(
+    apiSql.noVehicleOrderComplete,
+    [username, ordernumber],
+    (err, results) => {
+      if (results.affectedRows == 1) {
+        res.json({ code: 200, message: '提交成功' })
+      } else {
+        res.json({ code: 404, message: '提交失败' })
+      }
     }
-  })
+  )
 })
 
 module.exports = router

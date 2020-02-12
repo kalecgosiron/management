@@ -99,7 +99,7 @@ router.post('/uploadVehicleJson', function(req, res, next) {
       "';"
     sql_total += sql
   }
-  console.log(sql_total)
+  // console.log(sql_total)
   try {
     db.query(sql_total, [], function(err, results) {
       if (err) {
