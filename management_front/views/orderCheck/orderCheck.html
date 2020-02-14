@@ -290,6 +290,53 @@
                     tableData += '</tbody></table></div></div></div>'
                     $('body').append(tableData)
                   } else if (data.type == '非车险') {
+                    var tableData =
+                      "<div class='layui-fluid'><div class='layui-col-md12'><div class='layui-card'><table class='layui-table' id='tableID'><thead><tr>"
+                    tableData +=
+                      '<th>保单号</th><th>投保人名称</th><th>投保单签章</th><th>经办人</th><th>出单日期</th><th>出单员</th><th>保单印刷号</th><th>业务归属部门</th><th>保单状态</th><th>创建时间</th><th>创建用户</th></thead><tbody>'
+                    $.each(data.results, function(key, value) {
+                      console.log(key)
+                      console.log(value)
+                      tableData +=
+                        '<tr>' +
+                        '<td>' +
+                        value.ordernumber +
+                        '</td>' +
+                        '<td>' +
+                        value.applicant +
+                        '</td>' +
+                        '<td>' +
+                        value.ordersignature +
+                        '</td>' +
+                        '<td>' +
+                        value.charge +
+                        '</td>' +
+                        '<td>' +
+                        value.date +
+                        '</td>' +
+                        '<td>' +
+                        value.dispatchclerk +
+                        '</td>' +
+                        '<td>' +
+                        value.orderprintnumber +
+                        '</td>' +
+                        '<td>' +
+                        value.attributiondepartment +
+                        '</td>' +
+                        '<td>' +
+                        value.state +
+                        '</td>' +
+                        '<td>' +
+                        value.createtime +
+                        '</td>' +
+                        '<td>' +
+                        value.createuser +
+                        '</td>' +
+                        '</tr>'
+                    })
+                    console.log(tableData)
+                    tableData += '</tbody></table></div></div></div>'
+                    $('body').append(tableData)
                   }
                 } else if (data.code == 404) {
                   alert('查不到相关信息')

@@ -85,7 +85,7 @@ router.post('/checkUser', function(req, res, next) {
 })
 
 // 获取车险人员通讯录
-router.get('/getAddressbookVehicleInsurance', function(req, res, next) {
+router.post('/getAddressbookVehicleInsurance', function(req, res, next) {
   // 获取员工车险资料
   db.query(apiSql.getAddressbookVehicleInsurance, (err, results) => {
     if (err) {
@@ -206,7 +206,7 @@ router.post('/vehicleOrderComplete', function(req, res, next) {
 })
 
 // 获取非车险通讯录
-router.get('/getaddressbooknovehicleinsurance', function(req, res, next) {
+router.post('/getaddressbooknovehicleinsurance', function(req, res, next) {
   // const sqlStr = 'SELECT * FROM employee where novehicleinsurancequantity > 0'
 
   db.query(apiSql.getAddressbookNoVehicleInsurance, (err, results) => {
@@ -223,8 +223,6 @@ router.post('/novehicleinsuranceorderlist', function(req, res, next) {
   var daytype = req.body.daytype
   var name = req.body.name
   if (daytype == 1) {
-    // const sqlStr =
-    //   "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date<curdate()-interval 90 day && charge=?"
     db.query(apiSql.getInfoByName4, name, (err, results) => {
       if (err)
         return res.json({
@@ -239,8 +237,6 @@ router.post('/novehicleinsuranceorderlist', function(req, res, next) {
       })
     })
   } else if (daytype == 2) {
-    // const sqlStr =
-    //   "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date>curdate()-interval 90 day && date<curdate()-interval 60 day && charge=?"
     db.query(apiSql.getInfoByName5, name, (err, results) => {
       if (err)
         return res.json({
@@ -275,8 +271,6 @@ router.post('/novehicleinsuranceorderlist', function(req, res, next) {
       })
     })
   } else if (daytype == 3) {
-    // const sqlStr =
-    //   "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date>curdate()-interval 60 day && charge=?"
     db.query(apiSql.getInfoByName6, name, (err, results) => {
       if (err)
         return res.json({

@@ -16,6 +16,7 @@ var orderVerify = require('./routes/orderVerify')
 var api = require('./routes/api')
 var department = require('./routes/department')
 var employee = require('./routes/employee')
+var getData = require('./routes/getData')
 // express
 var app = express()
 
@@ -74,6 +75,7 @@ app.use('/orderVerify', orderVerify)
 app.use('/api', api)
 app.use('/department', department)
 app.use('/employee', employee)
+app.use('/getData', getData)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
