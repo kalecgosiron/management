@@ -1,0 +1,28 @@
+<!--pages/personalmenu/personalmenu.wxml-->
+<!--每个人的四个菜单 -->
+<scroll-view scroll-y class="scrollPage">
+  <cu-custom bgColor="bg-red" isBack="{{true}}">
+    <view slot="backText">返回</view>
+    <view slot="content">
+      <text>{{name}}-车险清单</text>
+    </view>
+  </cu-custom>
+  <view class="cu-card">
+    <view class="cu-item bg-img shadow-blur" style="background-color:#ee5253" bindtap="tojump01" data-daytype="1" data-name="{{ name }}" wx:key="key">
+      <view class="cardTitle">
+        超期扣罚
+      </view>
+    </view>
+    <view class="cu-item bg-img shadow-blur" style="background-color:#353b48" bindtap="tojump01" data-daytype="2" data-name="{{ name }}" wx:key="key">
+      <view class="cardTitle">
+        及时提醒
+      </view>
+    </view>
+    <view class="cu-item bg-img shadow-blur" style="background-color:#48dbfb" bindtap="tojump01" data-daytype="3" data-name="{{ name }}" wx:key="key">
+      <view class="cardTitle">
+        补齐时效
+      </view>
+    </view>
+  </view>
+  <view class="cu-tabbar-height"></view>
+</scroll-view>

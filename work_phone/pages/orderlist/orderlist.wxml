@@ -1,0 +1,57 @@
+<!--pages/orderlist/orderlist.wxml-->
+<cu-custom bgColor="bg-red" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">
+    <text>{{name}}-车险清单</text>
+  </view>
+</cu-custom>
+<!-- 保单卡片start -->
+<view class="text-center margin-top">
+  <!-- 判断语句判断是否不存该分类的表单 -->
+  <view wx:if="{{orderlist==0}}"><text style="font-size:50rpx;font-weight:900;color:var(--black);line-height:100rpx;padding:0 30rpx;">此分类下无欠投保资料</text></view>
+  <view class="cu-card article isCard" wx:for="{{orderlist}}" wx:key="ordernumber" data-ordernumber="{{item.ordernumber}}">
+    <block wx:if="{{item.state!='已核实'}}">
+      <view class="cu-item shadow">
+        <view class="title">
+          <!-- 保单号 -->
+          <!-- 因为是列表所以用item，单个数据直接用数据名 -->
+          <view class="text-black text-bold text-xl">{{str02}}: {{item.ordernumber}}</view>
+        </view>
+        <view class="content solid-bottom text-df padding">
+          <view class="desc" style="font-size:30rpx">
+            <view class="text-left" style="padding:0 15rpx">
+              <!-- 被保险人 -->
+              {{str12}}: {{item.insured}}<text>\n</text>
+              <!-- 车牌 -->
+              {{str13}}: {{item.licenseplate}}<text>\n</text>
+              <!-- 出单日期  -->
+              {{str01}}: {{item.date}}<text>\n</text>
+              {{str03}}: {{item.orderprintnumber}}<text>\n</text>
+              <!-- 经办人 -->
+              {{str09}}: {{item.charge}}<text>\n</text>
+              <!-- 业务归属部门（代码） -->
+              {{str10}}: {{item.attributiondepartment}}<text>\n</text>
+              <!-- 出单员 -->
+              {{str11}}: {{item.dispatchclerk}}<text>\n</text>
+              <!-- 欠投保单签章 -->
+              <view wx:if="{{item.lackordersignature!='null'}}" style="display:inline;color:red">{{str04}}: 欠缺<text>\n</text></view>
+              <!-- 截止日期（给日期加上天数） -->
+              <view wx:if="{{daytype!=1}}"style="color:red">{{str15}}: {{90-item.differ}}天</view>
+              <!-- 截止日期（超时） -->
+              <view wx:if="{{daytype==1}}"style="color:red">该保单已超时，正在扣罚</view>
+              <!-- 保单状态 -->
+              <view wx:if="{{item.state!=null}}">保单状态：{{item.state}}</view>
+              <!-- 保单状态 -->
+              <view wx:if="{{item.state==null}}">保单状态：未处理</view>
+            </view>
+            <!-- 按钮 -->
+            <view class="grid padding-sm flex justify-around">
+              <button class="cu-btn bg-green shadow-blur lg" bindtap="idSubmit" id="{{item.ordernumber}}">确定已补全资料，点击提交审核</button>
+            </view>  
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+<!-- 保单卡片end -->

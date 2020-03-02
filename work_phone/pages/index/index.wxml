@@ -1,0 +1,63 @@
+<cu-custom bgColor="bg-red">
+  <view slot="content">欠投保资料清单</view>
+</cu-custom>
+<!-- 搜索框start -->
+<view class="box">
+  <view class="cu-bar search bg-white">
+    <view class="search-form round">
+      <text class="cuIcon-search"></text>
+      <input type="text" placeholder="功能暂时关闭" confirm-type="search"></input>
+    </view>
+    <view class="action">
+      <button class="cu-btn bg-green shadow-blur round">搜索</button>
+    </view>
+  </view>
+</view>
+<!-- 搜索框end -->
+<!-- 保单卡片start -->
+<view class="text-center margin-top">
+  <view class="cu-card article isCard" wx:for="{{list}}" wx:key="ordernumber" bindtap='orderDetailsJump' data-id="{{item.ordernumber}}">
+    <view class="cu-item shadow">
+      <view class="title">
+        <!-- 保单号 -->
+        <!-- 因为是列表所以用item，单个数据直接用数据名 -->
+        <view class="text-cut">{{str02}}: {{item.ordernumber}}</view>
+      </view>
+      <view class="content">
+        <view class="desc">
+          <view class="text-left" style="padding:0 15rpx">
+          <!-- 出单日期  -->
+          {{str01}}: {{item.date}}<text>\n</text>
+          {{str03}}: {{item.orderprintnumber}}<text>\n</text>
+          <!-- 经办人 -->
+          {{str09}}: {{item.charge}}<text>\n</text>
+          <!-- 业务归属部门（代码） -->
+          {{str10}}: {{item.attributiondepartment}}<text>\n</text>
+          <!-- 出单员 -->
+          {{str11}}: {{item.dispatchclerk}}<text>\n</text>
+          <!-- 被保险人 -->
+          {{str12}}: {{item.insured}}<text>\n</text>
+          <!-- 车牌 -->
+          {{str13}}: {{item.licenseplate}}<text>\n</text>
+          <!-- 欠投保单签章 -->
+          <view wx:if="{{item.lackordersignature!=null}}" style="display:inline;color:red">{{str04}}: 欠缺<text>\n</text></view>
+          <!-- 欠保险销售确认书 -->
+          <view wx:if="{{item.lacksaleconfirmation!=null}}" style="display:inline;color:red">{{str05}}: 欠缺<text>\n</text></view>
+          <!-- 欠行驶证复印件 -->
+          <view wx:if="{{item.lackdrivingpermit!=null}}" style="display:inline;color:red">{{str06}}: 欠缺<text>\n</text></view>
+          <!-- 欠身份证复印件/组织机构代码证 -->
+          <view wx:if="{{item.lackidcardororganizationcode!=null}}" style="display:inline;color:red">{{str07}}: 欠缺<text>\n</text></view>
+          <!-- 欠其他资料 -->
+          <view wx:if="{{item.lackother}}" style="display:inline;color:red">{{str08}}: 欠缺<text>\n</text></view>
+          </view>
+          <!-- 按钮 -->
+          <view class="flex" style="margin-top:20rpx">
+            <button class="cu-btn bg-grey shadow-blur flex-sub ">保单详情</button>
+            <!-- <button class="cu-btn bg-green shadow-blur flex-sub round">完成</button> -->
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 保单卡片end -->

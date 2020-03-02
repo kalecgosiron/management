@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 var ejs = require('ejs')
 var expressJwt = require('express-jwt')
+var timeout = require('connect-timeout')
 // 模块路径导入
 var user = require('./routes/user')
 var captext = require('./routes/captext')
@@ -19,7 +20,15 @@ var employee = require('./routes/employee')
 var getData = require('./routes/getData')
 // express
 var app = express()
-
+app.use(timeout('5s'))
+app.use(function(req, res, next) {
+  setTimeout(function() {
+    if (req.timedout) {
+      res.send(503)
+    }
+  }, 5 * 1000)
+  next() //继续执行
+})
 // 跨域
 app.use((req, res, next) => {
   // 设置是否运行客户端设置 withCredentials

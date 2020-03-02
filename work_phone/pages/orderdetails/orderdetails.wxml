@@ -1,0 +1,63 @@
+<!--pages/orderdetails/orderdetails.wxml-->
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+	<view slot="backText">返回</view>
+	<view slot="content">欠投保资料详情</view>
+</cu-custom>
+<form bindsubmit="formSubmit">
+  <view class="cu-form-group margin-top">
+    <view class="title">保单号</view>
+    <input placeholder="{{orderdetails.ordernumber}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group">
+    <view class="title">出单日期</view>
+    <input placeholder="{{orderdetails.date}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group">
+    <view class="title">保单印刷号</view>
+    <input placeholder="{{orderdetails.orderprintnumber}}" disabled="true"></input>
+  </view>
+
+  <view class="cu-form-group" wx:if="{{orderdetails.lackordersignature!=null}}">
+    <view class="title" style="color:red">欠投保单签章</view>
+      <input placeholder="缺少" style="color:red" disabled="true"></input>
+  </view>
+  <view class="cu-form-group" wx:if="{{orderdetails.lacksaleconfirmation!=null}}">
+    <view class="title">欠保险销售确认书</view>
+    <input placeholder="{{orderdetails.lacksaleconfirmation}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group" wx:if="{{orderdetails.lackdrivingpermit!=null}}">
+    <view class="title">欠行驶证复印件</view>
+    <input placeholder="{{orderdetails.lackdrivingpermit}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group" wx:if="{{orderdetails.lackidcardororganizationcode!=null}}">
+    <view class="title">欠身份证复印件/组织机构代码证</view>
+    <input placeholder="{{orderdetails.lackidcardororganizationcode}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group" wx:if="{{orderdetails.lackother!=null}}">
+    <view class="title">欠其他资料</view>
+    <input placeholder="{{orderdetails.lackother}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group">
+    <view class="title">经办人</view>
+    <input placeholder="{{orderdetails.charge}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group">
+    <view class="title">业务归属部门（代码）</view>
+    <input placeholder="{{orderdetails.attributiondepartment}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group">
+    <view class="title">出单员</view>
+    <input placeholder="{{orderdetails.dispatchclerk}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group">
+    <view class="title">被保险人</view>
+    <input placeholder="{{orderdetails.insured}}" disabled="true"></input>
+  </view>
+  <view class="cu-form-group">
+    <view class="title">车牌</view>
+    <input placeholder="{{orderdetails.licenseplate}}" disabled="true"></input>
+  </view>
+  <view class="flex" style="margin-top:20rpx;margin-bottom:20rpx;padding:20rpx">
+    <button class="cu-btn bg-green shadow-blur flex-sub" form-type="submit">完成</button>
+  </view>
+</form>

@@ -1,0 +1,177 @@
+<!--pages/neworder/neworder.wxml-->
+<cu-custom bgColor="bg-gradual-pink">
+	<view slot="content">新建保单</view>
+</cu-custom>
+<scroll-view scroll-x class="bg-white nav text-center fixed" style="top:{{CustomBar}}px">
+  <view class="cu-item {{index==TabCur?'text-blue cur':''}}" wx:for="{{tabNav}}" wx:key bindtap='tabSelect' data-id="{{index}}">
+    {{tabNav[index]}}
+  </view>
+</scroll-view>
+
+<!-- 车险 -->
+<block wx:if="{{TabCur==0}}">
+  <view style="margin-top:100rpx">
+    <view class="cu-form-group margin-top">
+      <view class="title">保单号</view>
+      <input placeholder="点击此处输入保单号" placeholder-style='text-align:right' bindinput="ordernumberInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">出单日期</view>
+      <picker mode="date" value="{{date}}" start="2015-09-01" end="2200-09-01" bindchange="DateChange">
+      <view class="picker">
+        {{date}}
+      </view>
+      </picker>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">保单印刷号</view>
+      <input placeholder="点击此处输入保单印刷号" placeholder-style='text-align:right' bindinput="orderprintnumberInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">经办人</view>
+      <input placeholder="点击此处输入经办人" placeholder-style='text-align:right' bindinput="chargeInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">业务归属部门（代码）</view>
+      <input placeholder="点击此处输入业务归属部门（代码）" placeholder-style='text-align:right' bindinput="attributiondepartmentInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">出单员</view>
+      <input placeholder="点击此处输入出单员" placeholder-style='text-align:right' bindinput="dispatchclerkInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">被保险人</view>
+      <input placeholder="点击此处输入被保险人" placeholder-style='text-align:right' bindinput="insuredInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">车牌</view>
+      <input placeholder="点击此处输入车牌" placeholder-style='text-align:right' bindinput="licenseplateInput"></input>
+    </view>
+
+    <checkbox-group bindchange="lackordersignatureChange">
+      <view class="cu-form-group">
+        <view class="title">欠投保单签章</view>
+        <checkbox class="round red close" value="true"></checkbox>
+      </view>
+    </checkbox-group>
+
+    <checkbox-group bindchange="lacksaleconfirmationChange">
+      <view class="cu-form-group">
+        <view class="title">欠保险销售确认书</view>
+        <checkbox class="round red close" value="true"></checkbox>
+      </view>
+    </checkbox-group>
+
+    <checkbox-group bindchange="lackdrivingpermitChange">
+      <view class="cu-form-group">
+        <view class="title">欠行驶证复印件</view>
+        <checkbox class="round red close" value="true"></checkbox>
+      </view>
+    </checkbox-group>
+
+    <checkbox-group bindchange="lackidcardororganizationcodeChange">
+      <view class="cu-form-group">
+        <view class="title">欠身份证复印件/组织机构代码证</view>
+        <checkbox class="round red close" value="true"></checkbox>
+      </view>
+    </checkbox-group>
+    
+    <checkbox-group bindchange="lackotherChange">
+      <view class="cu-form-group">
+        <view class="title">欠其他资料</view>
+        <checkbox class="round red close" value="true"></checkbox>
+      </view>
+    </checkbox-group>
+
+    <view class="flex" style="margin-top:20rpx;margin-bottom:20rpx;padding:20rpx">
+      <button class="cu-btn bg-green shadow-blur flex-sub" bindtap="formsubmit">提交</button>
+    </view>
+  </view>
+</block>
+<!-- 非车险 -->
+<block wx:if="{{TabCur==1}}">
+  <view style="margin-top:100rpx">
+    <view class="cu-form-group margin-top">
+      <view class="title">保单号</view>
+      <input placeholder="点击此处输入保单号" placeholder-style='text-align:right' bindinput="ordernumberInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">出单日期</view>
+      <picker mode="date" value="{{date}}" start="2015-09-01" end="2200-09-01" bindchange="DateChange">
+      <view class="picker">
+        {{date}}
+      </view>
+      </picker>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">保单印刷号</view>
+      <input placeholder="点击此处输入保单印刷号" placeholder-style='text-align:right' bindinput="orderprintnumberInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">投保人</view>
+      <input placeholder="点击此处输入投保人" placeholder-style='text-align:right' bindinput="applicantInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">经办人</view>
+      <input placeholder="点击此处输入经办人" placeholder-style='text-align:right' bindinput="chargeInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">业务归属部门（代码）</view>
+      <input placeholder="点击此处输入业务归属部门（代码）" placeholder-style='text-align:right' bindinput="attributiondepartmentInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">出单员</view>
+      <input placeholder="点击此处输入出单员" placeholder-style='text-align:right' bindinput="dispatchclerkInput"></input>
+    </view>
+    <view class="cu-form-group">
+      <view class="title">保单印刷号</view>
+      <input placeholder="点击此处输入出单员" placeholder-style='text-align:right' bindinput="orderprintnumberInput"></input>
+    </view>
+
+    <checkbox-group bindchange="lackordersignatureChange">
+      <view class="cu-form-group">
+        <view class="title">欠投保单签章</view>
+        <checkbox class="round red close" value="true"></checkbox>
+      </view>
+    </checkbox-group>
+
+    <checkbox-group bindchange="lackcustomercertificateinformationChange">
+      <view class="cu-form-group">
+        <view class="title">欠客户证件资料</view>
+        <checkbox class="round red close"  value="true" ></checkbox>
+      </view>
+    </checkbox-group>
+
+    <checkbox-group bindchange="lackopposemoneylaunderinginformationChange">
+      <view class="cu-form-group">
+        <view class="title">欠符合反洗钱标准提供反洗钱资料</view>
+        <checkbox class="round red close"  value="true"></checkbox>
+      </view>
+    </checkbox-group>  
+
+    <checkbox-group bindchange="lackapprovaldataChange">
+      <view class="cu-form-group">
+        <view class="title">欠特殊业务需要报批的报批材料或手续</view>
+        <checkbox class="round red close"  value="true"></checkbox>
+      </view>
+    </checkbox-group>  
+
+    <checkbox-group bindchange="lackinsurancetypecorresponddataChange">
+      <view class="cu-form-group">
+        <view class="title">欠各险种对应需要提供的材料</view>
+        <checkbox class="round red close"  value="true"></checkbox>
+      </view>
+    </checkbox-group>  
+
+    <checkbox-group bindchange="lacksaleconfirmationChange">
+      <view class="cu-form-group">
+        <view class="title">欠销售确认书</view>
+        <checkbox class="round red close"  value="true"></checkbox>
+      </view>
+    </checkbox-group>
+
+    <view class="flex" style="margin-top:20rpx;margin-bottom:20rpx;padding:20rpx">
+      <button class="cu-btn bg-green shadow-blur flex-sub" bindtap="form2submit">提交</button>
+    </view>
+  </view>
+</block>

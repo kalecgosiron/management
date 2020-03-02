@@ -1,0 +1,46 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/novehicleinsurance/novehicleinsurance",
+    "pages/neworder/neworder",
+    "pages/addressbook/addressbook",
+    "pages/personalmenu/personalmenu",
+    "pages/index/index",
+    "pages/orderdetails/orderdetails",
+    "pages/orderlist/orderlist",
+    "pages/novehicleinsurancepersonalmenu/novehicleinsurancepersonalmenu",
+    "pages/novehicleinsuranceorderlist/novehicleinsuranceorderlist"
+  ],
+  "tabBar": {
+    "selectedColor": "#576b95",
+    "list": [
+      {
+        "pagePath": "pages/novehicleinsurance/novehicleinsurance",
+        "text": "非车险保单",
+        "iconPath": "images/tabbar/component.png",
+        "selectedIconPath": "images/tabbar/component_cur.png",
+        "color": "#000000",
+        "selectedColor": "#EDEDED"
+      },
+      {
+        "pagePath": "pages/addressbook/addressbook",
+        "text": "车险保单",
+        "iconPath": "images/tabbar/basics.png",
+        "selectedIconPath": "images/tabbar/basics_cur.png",
+        "color": "#000000",
+        "selectedColor": "#EDEDED"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "ColorUI",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white"
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  },
+  "sitemapLocation": "sitemap.json"
+}

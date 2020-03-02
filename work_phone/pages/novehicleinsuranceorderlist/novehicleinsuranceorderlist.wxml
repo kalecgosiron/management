@@ -1,0 +1,51 @@
+<!--pages/novehicleinsuranceorderlist/novehicleinsuranceorderlist.wxml-->
+<cu-custom bgColor="bg-red" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">
+    <text>{{name}}-欠投保清单</text>
+  </view>
+</cu-custom>
+<!-- 保单卡片start -->
+<view class="text-center margin-top">
+  <view wx:if="{{orderlist==0}}"><text style="font-size:50rpx;font-weight:900;color:var(--black);line-height:100rpx;padding:0 30rpx;">此分类下无欠投保资料</text></view>
+  <view class="cu-card article isCard" wx:for="{{orderlist}}" wx:key="ordernumber" data-id="{{item.ordernumber}}">
+    <view class="cu-item shadow">
+      <view class="title">
+        <!-- 保单号 -->
+        <!-- 因为是列表所以用item，单个数据直接用数据名 -->
+        <view class="text-black text-bold text-xl">{{str02}}: {{item.ordernumber}}</view>
+      </view>
+      <view class="content solid-bottom text-df padding">
+        <view class="desc" style="font-size:30rpx">
+          <view class="text-left" style="padding:0 15rpx">
+            <!-- 投保人  -->
+            {{str03}}: {{item.applicant}}<text>\n</text>
+            <!-- 出单日期  -->
+            {{str01}}: {{item.date}}<text>\n</text>
+            <!-- 经办人 -->
+            {{str09}}: {{item.charge}}<text>\n</text>
+            <!-- 业务归属部门（代码） -->
+            {{str13}}: {{item.attributiondepartment}}<text>\n</text>
+            <!-- 出单员 -->
+            {{str10}}: {{item.dispatchclerk}}<text>\n</text>
+            <!-- 保单印刷号 -->
+            {{str11}}: {{item.orderprintnumber}}<text>\n</text>
+            <!-- 欠投保单签章 -->
+            <view style="display:inline;color:red">{{str04}}: {{item.ordersignature}}<text>\n</text></view>
+            <!-- 截止日期（给日期加上天数） -->
+            <view wx:if="{{daytype!=1}}"style="color:red">{{str14}}: {{90-item.differ}}天</view>
+            <!-- 保单状态 -->
+            <view wx:if="{{item.state!=null}}">保单状态：{{item.state}}</view>
+            <!-- 保单状态 -->
+            <view wx:if="{{item.state==null}}">保单状态：未处理</view>
+          </view>
+          <!-- 按钮 -->
+          <view class="grid padding-sm flex justify-around">
+            <button class="cu-btn bg-green shadow-blur lg" bindtap="idSubmit" id="{{item.ordernumber}}">确定已补全资料，点击提交审核</button>
+          </view>  
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 保单卡片end -->
