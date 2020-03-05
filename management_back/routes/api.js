@@ -26,7 +26,7 @@ router.post('/checkUser', function(req, res, next) {
             authority: user.userauthority
           },
           'xIandsan',
-          { expiresIn: 3600 * 24 }
+          { expiresIn: 3600 }
         )
       // console.log(token)
       res.send({
@@ -207,8 +207,6 @@ router.post('/vehicleOrderComplete', function(req, res, next) {
 
 // 获取非车险通讯录
 router.post('/getaddressbooknovehicleinsurance', function(req, res, next) {
-  // const sqlStr = 'SELECT * FROM employee where novehicleinsurancequantity > 0'
-
   db.query(apiSql.getAddressbookNoVehicleInsurance, (err, results) => {
     if (err) {
       res.json({ code: 404, message: '资料不存在', affextedRows: 0 })
@@ -224,85 +222,91 @@ router.post('/novehicleinsuranceorderlist', function(req, res, next) {
   var name = req.body.name
   if (daytype == 1) {
     db.query(apiSql.getInfoByName4, name, (err, results) => {
-      if (err)
-        return res.json({
+      if (err) {
+        res.json({
           err_code: 404,
           message: '资料不存在',
           affextedRows: 0
         })
-      res.json({
-        code: 200,
-        message: results,
-        affextedRows: results.affextedRows
-      })
+      } else {
+        res.json({
+          code: 200,
+          message: results,
+          affextedRows: results.affextedRows
+        })
+      }
     })
   } else if (daytype == 2) {
     db.query(apiSql.getInfoByName5, name, (err, results) => {
-      if (err)
-        return res.json({
+      if (err) {
+        res.json({
           err_code: 404,
           message: '资料不存在',
           affextedRows: 0
         })
-      //加个异常处理
-      try {
-        var index = 0
-        while (index < results.length) {
-          //计算日期start
-          var time = results[index].date
-          var time02 = new Date(Date.parse(time.replace(/-/g, '/'))).getTime()
-          //差值 = 当前时间 - 取出来的时间
-          var differ = Date.now() - time02
-          // console.log(Date.now(),'-',time02,'=',differ);
-          var differ = new Date(differ)
-          var dt = parseInt(differ / (3600 * 24 * 1000))
-          // console.log(dt)
-          //计算日期end
-          results[index].differ = dt
-          index += 1
+      } else {
+        //加个异常处理
+        try {
+          var index = 0
+          while (index < results.length) {
+            //计算日期start
+            var time = results[index].date
+            var time02 = new Date(Date.parse(time.replace(/-/g, '/'))).getTime()
+            //差值 = 当前时间 - 取出来的时间
+            var differ = Date.now() - time02
+            // console.log(Date.now(),'-',time02,'=',differ);
+            var differ = new Date(differ)
+            var dt = parseInt(differ / (3600 * 24 * 1000))
+            // console.log(dt)
+            //计算日期end
+            results[index].differ = dt
+            index += 1
+          }
+        } catch (err) {
+          // console.log(err)
         }
-      } catch (err) {
-        // console.log(err)
+        res.json({
+          code: 200,
+          message: results,
+          affextedRows: results.affextedRows
+        })
       }
-      res.json({
-        code: 200,
-        message: results,
-        affextedRows: results.affextedRows
-      })
     })
   } else if (daytype == 3) {
     db.query(apiSql.getInfoByName6, name, (err, results) => {
-      if (err)
-        return res.json({
+      if (err) {
+        res.json({
           err_code: 404,
           message: '资料不存在',
           affextedRows: 0
         })
-      //加个异常处理
-      try {
-        var index = 0
-        while (index < results.length) {
-          //计算日期start
-          var time = results[index].date
-          var time02 = new Date(Date.parse(time.replace(/-/g, '/'))).getTime()
-          //差值 = 当前时间 - 取出来的时间
-          var differ = Date.now() - time02
-          // console.log(Date.now(),'-',time02,'=',differ);
-          var differ = new Date(differ)
-          var dt = parseInt(differ / (3600 * 24 * 1000))
-          // console.log(dt)
-          //计算日期end
-          results[index].differ = dt
-          index += 1
+      } else {
+        //加个异常处理
+        try {
+          var index = 0
+          while (index < results.length) {
+            //计算日期start
+            var time = results[index].date
+            var time02 = new Date(Date.parse(time.replace(/-/g, '/'))).getTime()
+            //差值 = 当前时间 - 取出来的时间
+            var differ = Date.now() - time02
+            // console.log(Date.now(),'-',time02,'=',differ);
+            var differ = new Date(differ)
+            var dt = parseInt(differ / (3600 * 24 * 1000))
+            // console.log(dt)
+            //计算日期end
+            results[index].differ = dt
+            index += 1
+          }
+        } catch (err) {
+          // console.log(err)
         }
-      } catch (err) {
-        // console.log(err)
+        res.json({
+          code: 200,
+          message: results,
+          affextedRows: results.affextedRows
+        })
       }
-      res.json({
-        code: 200,
-        message: results,
-        affextedRows: results.affextedRows
-      })
     })
   }
 })

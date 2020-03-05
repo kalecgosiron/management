@@ -20,6 +20,7 @@ var employee = require('./routes/employee')
 var getData = require('./routes/getData')
 // express
 var app = express()
+// 超时处理
 app.use(timeout('5s'))
 app.use(function(req, res, next) {
   setTimeout(function() {
@@ -27,7 +28,7 @@ app.use(function(req, res, next) {
       res.send(503)
     }
   }, 5 * 1000)
-  next() //继续执行
+  next() // 继续执行
 })
 // 跨域
 app.use((req, res, next) => {
