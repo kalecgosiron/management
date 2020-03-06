@@ -187,6 +187,14 @@ router.post('/uploadNoVehicleJson', function(req, res, next) {
       table_data[i].applicant +
       "',ordersignature='" +
       table_data[i].ordersignature +
+      "',id_card='" +
+      table_data[i].id_card +
+      "',aml='" +
+      table_data[i].aml +
+      "',special_business_materials='" +
+      table_data[i].special_business_materials +
+      "',other_data='" +
+      table_data[i].special_business_materials +
       "',charge='" +
       table_data[i].charge +
       "',date='" +

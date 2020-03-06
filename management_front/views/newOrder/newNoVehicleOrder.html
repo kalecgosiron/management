@@ -132,15 +132,57 @@
                       />
                     </div>
                   </div>
-                </div>
-
-                <div class="layui-form-item">
                   <div class="layui-col-lg6">
                     <label class="layui-form-label">投保单签章</label>
                     <div class="layui-input-block">
                       <input
                         type="checkbox"
                         name="ordersignature"
+                        lay-skin="switch"
+                        lay-text="不欠缺|欠缺"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <div class="layui-col-lg10">
+                    <label class="layui-form-label" style="width: 100px;"
+                      >客户证件资料</label
+                    >
+                    <div class="layui-input-block">
+                      <input
+                        type="checkbox"
+                        name="id_card"
+                        lay-skin="switch"
+                        lay-text="不欠缺|欠缺"
+                      />
+                    </div>
+                  </div>
+                  <div class="layui-col-lg6">
+                    <label class="layui-form-label" style="width: 100px;"
+                      >反洗钱资料</label
+                    >
+                    <div class="layui-input-block">
+                      <input
+                        type="checkbox"
+                        name="aml"
+                        lay-skin="switch"
+                        lay-text="不欠缺|欠缺"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <div class="layui-col-lg10">
+                    <label class="layui-form-label" style="width: 100px;"
+                      >特殊业务材料</label
+                    >
+                    <div class="layui-input-block">
+                      <input
+                        type="checkbox"
+                        name="special_business_materials"
                         lay-skin="switch"
                         lay-text="不欠缺|欠缺"
                       />
@@ -330,20 +372,29 @@
                 tabLen.rows[i].cells[1].innerHTML +
                 '","ordersignature":"' +
                 tabLen.rows[i].cells[2].innerHTML +
-                '","charge":"' +
+                '","id_card":"' +
                 tabLen.rows[i].cells[3].innerHTML +
-                '","date":"' +
+                '","aml":"' +
                 tabLen.rows[i].cells[4].innerHTML +
-                '","dispatchclerk":"' +
+                '","special_business_materials":"' +
                 tabLen.rows[i].cells[5].innerHTML +
-                '","orderprintnumber":"' +
+                '","other_data":"' +
                 tabLen.rows[i].cells[6].innerHTML +
-                '","attributiondepartment":"' +
+                '","charge":"' +
                 tabLen.rows[i].cells[7].innerHTML +
+                '","date":"' +
+                tabLen.rows[i].cells[8].innerHTML +
+                '","dispatchclerk":"' +
+                tabLen.rows[i].cells[9].innerHTML +
+                '","orderprintnumber":"' +
+                tabLen.rows[i].cells[10].innerHTML +
+                '","attributiondepartment":"' +
+                tabLen.rows[i].cells[11].innerHTML +
                 '"},'
             }
             jsonT = jsonT.substr(0, jsonT.length - 1)
             jsonT += ']'
+            console.log(jsonT)
             $.ajax({
               headers: {
                 Authorization: window.localStorage.getItem('token')

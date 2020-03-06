@@ -77,12 +77,30 @@ router.post('/newNoVehicleOrder', function(req, res, next) {
     } else {
       var ordersignature = '不欠缺'
     }
+    if (req.body.id_card === undefined) {
+      var id_card = '欠缺'
+    } else {
+      var id_card = '不欠缺'
+    }
+    if (req.body.aml === undefined) {
+      var aml = '欠缺'
+    } else {
+      var aml = '不欠缺'
+    }
+    if (req.body.special_business_materials === undefined) {
+      var special_business_materials = '欠缺'
+    } else {
+      var special_business_materials = '不欠缺'
+    }
     db.query(
       newOrderSql.newNoVehicleOrder,
       [
         ordernumber,
         applicant,
         ordersignature,
+        id_card,
+        aml,
+        special_business_materials,
         charge,
         date,
         dispatchclerk,

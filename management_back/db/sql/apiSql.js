@@ -11,11 +11,11 @@ var apiSql = {
   vehicleOrderComplete:
     "update vehicleinsurance set state='待审核',lastchangeuser=? where ordernumber = ?",
   getInfoByName4:
-    "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date<curdate()-interval 90 day && charge=?",
+    "select ordernumber,applicant,ordersignature,id_card,aml,special_business_materials,other_data,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date<curdate()-interval 90 day && charge=?",
   getInfoByName5:
-    "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date>curdate()-interval 90 day && date<curdate()-interval 60 day && charge=?",
+    "select ordernumber,applicant,ordersignature,id_card,aml,special_business_materials,other_data,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date>curdate()-interval 90 day && date<curdate()-interval 60 day && charge=?",
   getInfoByName6:
-    "select ordernumber,applicant,ordersignature,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date>curdate()-interval 60 day && charge=?",
+    "select ordernumber,applicant,ordersignature,id_card,aml,special_business_materials,other_data,charge,date_format(date,'%Y-%m-%d') as date,dispatchclerk,orderprintnumber,attributiondepartment,state from novehicleinsurance where date>curdate()-interval 60 day && charge=?",
   noVehicleOrderComplete:
     "update novehicleinsurance set state='待审核',lastchangeuser=? where ordernumber = ?",
   getEmployeeData:

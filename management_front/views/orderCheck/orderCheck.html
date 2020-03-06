@@ -293,7 +293,7 @@
                     var tableData =
                       "<div class='layui-fluid'><div class='layui-col-md12'><div class='layui-card'><table class='layui-table' id='tableID'><thead><tr>"
                     tableData +=
-                      '<th>保单号</th><th>投保人名称</th><th>投保单签章</th><th>经办人</th><th>出单日期</th><th>出单员</th><th>保单印刷号</th><th>业务归属部门</th><th>保单状态</th><th>创建时间</th><th>创建用户</th></thead><tbody>'
+                      '<th>保单号</th><th>被保险人</th><th>投保单签章</th><th>客户证件资料</th><th>反洗钱资料</th><th>特殊业务的报批材料</th><th>各险种对应需要提供的材料</th><th>经办人</th><th>出单日期</th><th>出单员</th><th>保单印刷号</th><th>业务归属部门</th><th>保单状态</th><th>创建时间</th><th>创建用户</th></thead><tbody>'
                     $.each(data.results, function(key, value) {
                       console.log(key)
                       console.log(value)
@@ -307,6 +307,18 @@
                         '</td>' +
                         '<td>' +
                         value.ordersignature +
+                        '</td>' +
+                        '<td>' +
+                        value.id_card +
+                        '</td>' +
+                        '<td>' +
+                        value.aml +
+                        '</td>' +
+                        '<td>' +
+                        value.special_business_materials +
+                        '</td>' +
+                        '<td>' +
+                        value.other_data +
                         '</td>' +
                         '<td>' +
                         value.charge +
