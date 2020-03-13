@@ -7,7 +7,7 @@ Page({
     CustomBar: app.globalData.CustomBar,
     hidden: true
   },
-  onLoad: function () {
+  onShow: function () {
     var that = this;//用了wx.request这一句一定不能少
     //导入url.js方便以后修改ip地址
     var utilurl = require('../tools/url.js')

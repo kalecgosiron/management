@@ -20,16 +20,6 @@ var employee = require('./routes/employee')
 var getData = require('./routes/getData')
 // express
 var app = express()
-// 超时处理
-app.use(timeout('5s'))
-app.use(function(req, res, next) {
-  setTimeout(function() {
-    if (req.timedout) {
-      res.send(503)
-    }
-  }, 5 * 1000)
-  next() // 继续执行
-})
 // 跨域
 app.use((req, res, next) => {
   // 设置是否运行客户端设置 withCredentials
@@ -49,7 +39,16 @@ app.use((req, res, next) => {
     next()
   }
 })
-
+// 超时处理
+app.use(timeout('5s'))
+app.use(function(req, res, next) {
+  setTimeout(function() {
+    if (req.timedout) {
+      res.sendStatus(503)
+    }
+  }, 5 * 1000)
+  next() // 继续执行
+})
 app.engine('html', ejs.__express)
 app.set('view engine', 'html')
 

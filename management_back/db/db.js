@@ -1,6 +1,6 @@
 var mysql = require('mysql')
 var pool = mysql.createPool({
-  connectionLimit: 10,
+  connectionLimit: 1000,
   host: 'localhost',
   user: 'root',
   password: '123456',
@@ -9,6 +9,7 @@ var pool = mysql.createPool({
 })
 
 function query(sql, values, callback) {
+  console.log(sql)
   console.log('db pool')
   pool.getConnection(function(err, connection) {
     if (err) throw err
